@@ -10,14 +10,10 @@ import (
 	"github.com/nam-truong-le/lambda-utils-go/pkg/aws/ssm"
 	"github.com/nam-truong-le/lambda-utils-go/pkg/logger"
 	"github.com/nam-truong-le/lambda-utils-go/pkg/mongodb"
+	vs2context "github.com/vietnam-immigrations/vs2-utils-go/pkg/context"
 )
 
-const (
-	colOrdersName  = "orders"
-	keyOrderID     = "order_id"
-	keyOrderWooID  = "order_woo_id"
-	keyOrderNumber = "order_number"
-)
+const colOrdersName = "orders"
 
 func CollectionOrders(ctx context.Context) (*mongo.Collection, error) {
 	database, err := ssm.GetParameter(ctx, "/mongo/database", false)
@@ -29,10 +25,10 @@ func CollectionOrders(ctx context.Context) (*mongo.Collection, error) {
 
 // AddOrderToContext adds order data to context
 func AddOrderToContext(ctx context.Context, order Order) context.Context {
-	logger.AddFields(keyOrderID, keyOrderWooID, keyOrderNumber)
-	result := context.WithValue(ctx, keyOrderID, order.ID)
-	result = context.WithValue(result, keyOrderWooID, order.OrderID)
-	result = context.WithValue(result, keyOrderNumber, order.Number)
+	logger.AddFields(vs2context.FieldOrderID, vs2context.FieldOrderWooID, vs2context.FieldOrderNumber)
+	result := context.WithValue(ctx, vs2context.FieldOrderID, order.ID)
+	result = context.WithValue(result, vs2context.FieldOrderWooID, order.OrderID)
+	result = context.WithValue(result, vs2context.FieldOrderNumber, order.Number)
 	return result
 }
 
