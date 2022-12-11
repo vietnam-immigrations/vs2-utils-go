@@ -4,7 +4,9 @@ go 1.19
 
 require (
 	github.com/google/uuid v1.3.0
-	github.com/nam-truong-le/lambda-utils-go v1.4.2
+	github.com/mailjet/mailjet-apiv3-go/v4 v4.0.1
+	github.com/nam-truong-le/lambda-utils-go v1.4.3
+	github.com/pkg/errors v0.9.1
 	github.com/pusher/pusher-http-go/v5 v5.1.1
 	github.com/stretchr/testify v1.8.0
 	go.mongodb.org/mongo-driver v1.11.1
@@ -29,8 +31,8 @@ require (
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/klauspost/compress v1.15.12 // indirect
+	github.com/mailjet/mailjet-apiv3-go/v3 v3.2.0 // indirect
 	github.com/montanaflynn/stats v0.6.6 // indirect
-	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/samber/lo v1.36.0 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
