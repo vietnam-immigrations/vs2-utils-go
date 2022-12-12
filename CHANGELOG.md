@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.6] - 2022-12-12
+### Added
+- Time package
+
 ## [1.0.5] - 2022-12-11
 ### Fixed
 - Wrong SSM parameter name for database
