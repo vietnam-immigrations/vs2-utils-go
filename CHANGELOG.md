@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.7] - 2022-12-15
+### Added
+- Text package
+
 ## [1.0.6] - 2022-12-12
 ### Added
 - Time package
