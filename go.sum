@@ -1,5 +1,5 @@
-github.com/aws/aws-lambda-go v1.36.0 h1:NWBWBJgavrQOjF1uKDG5D7Qs5y5o75HcrjfA16Hwfak=
-github.com/aws/aws-lambda-go v1.36.0/go.mod h1:jwFe2KmMsHmffA1X2R09hH6lFzJQxzI8qK17ewzbQMM=
+github.com/aws/aws-lambda-go v1.36.1 h1:CJxGkL9uKszIASRDxzcOcLX6juzTLoTKtCIgUGcTjTU=
+github.com/aws/aws-lambda-go v1.36.1/go.mod h1:jwFe2KmMsHmffA1X2R09hH6lFzJQxzI8qK17ewzbQMM=
 github.com/aws/aws-sdk-go-v2 v1.17.3 h1:shN7NlnVzvDUgPQ+1rLMSxY8OWRNDRYtiqe0p/PgrhY=
 github.com/aws/aws-sdk-go-v2 v1.17.3/go.mod h1:uzbQtefpm44goOPmdKyAlXSNcwlRgF3ePWVW6EtJvvw=
 github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 h1:dK82zF6kkPeCo8J1e+tGx4JdvDIQzj7ygIoLg8WMuGs=
@@ -72,8 +72,8 @@ github.com/mailjet/mailjet-apiv3-go/v4 v4.0.1/go.mod h1:2SU3t6eh/uK6BSeBmdhpIUau
 github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe/go.mod h1:wL8QJuTMNUDYhXwkmfOly8iTdp5TEcJFWZD2D7SIkUc=
 github.com/montanaflynn/stats v0.6.6 h1:Duep6KMIDpY4Yo11iFsvyqJDyfzLF9+sndUKT+v64GQ=
 github.com/montanaflynn/stats v0.6.6/go.mod h1:etXPPgVO6n31NxCd9KQUMvCM+ve0ruNzt6R8Bnaayow=
-github.com/nam-truong-le/lambda-utils-go v1.10.8 h1:Iirktqphb7ET6tikMhBJKiOiUOOrTJEANdpejOgMqdo=
-github.com/nam-truong-le/lambda-utils-go v1.10.8/go.mod h1:2b2aTQUNHHkWqa3swcTuP63rszoSqqj1H/f18R+H0fo=
+github.com/nam-truong-le/lambda-utils-go v1.10.9 h1:e15Ipg6Rz0N6n4iErczxJP40U8/bAsQnFT1uTk/Oiko=
+github.com/nam-truong-le/lambda-utils-go v1.10.9/go.mod h1:mKdsgXmzTG+MD0nYgWPGu6HvjyLhQNEnJzLEtoQZy70=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
