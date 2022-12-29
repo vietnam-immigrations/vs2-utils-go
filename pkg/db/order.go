@@ -54,9 +54,18 @@ type Trip struct {
 	Arrival time.Time `bson:"arrival" json:"arrival"`
 }
 
+type ApplicantAttachmentStatus string
+
+const (
+	ApplicantAttachmentStatusPending  ApplicantAttachmentStatus = "Pending"
+	ApplicantAttachmentStatusRejected ApplicantAttachmentStatus = "Rejected"
+	ApplicantAttachmentStatusApproved ApplicantAttachmentStatus = "Approved"
+)
+
 type ApplicantAttachment struct {
-	S3Key    string `bson:"s3Key" json:"s3Key"`
-	Approved bool   `bson:"approved" json:"approved"`
+	S3Key          string                    `bson:"s3Key" json:"s3Key"`
+	Status         ApplicantAttachmentStatus `bson:"status" json:"status"`
+	RejectedReason *string                   `bson:"rejectedReason,omitempty" json:"rejectedReason,omitempty"`
 }
 
 type Applicant struct {
@@ -96,6 +105,7 @@ type Order struct {
 	Applicants         []Applicant        `bson:"applicants" json:"applicants"`
 	Type               OrderType          `bson:"type" json:"type"`
 
+	AdminKey     *string   `bson:"adminKey,omitempty" json:"adminKey,omitempty"`
 	AllVisaSent  bool      `bson:"allVisaSent" json:"allVisaSent"`
 	InvoiceDocID string    `bson:"invoiceDocId" json:"invoiceDocId"`
 	CreatedAt    time.Time `bson:"createdAt" json:"createdAt"`
