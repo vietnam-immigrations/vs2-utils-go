@@ -54,16 +54,23 @@ type Trip struct {
 	Arrival time.Time `bson:"arrival" json:"arrival"`
 }
 
+type ApplicantAttachment struct {
+	S3Key    string `bson:"s3Key" json:"s3Key"`
+	Approved bool   `bson:"approved" json:"approved"`
+}
+
 type Applicant struct {
-	FirstName        string `bson:"firstName" json:"firstName"`
-	LastName         string `bson:"lastName" json:"lastName"`
-	DateOfBirth      string `bson:"dateOfBirth" json:"dateOfBirth"`
-	Sex              string `bson:"sex" json:"sex"`
-	Nationality      string `bson:"nationality" json:"nationality"`
-	PassportNumber   string `bson:"passportNumber" json:"passportNumber"`
-	PassportExpiry   string `bson:"passportExpiry" json:"passportExpiry"`
-	RegistrationCode string `bson:"registrationCode" json:"registrationCode"`
-	Email            string `bson:"email" json:"email"`
+	FirstName          string               `bson:"firstName" json:"firstName"`
+	LastName           string               `bson:"lastName" json:"lastName"`
+	DateOfBirth        string               `bson:"dateOfBirth" json:"dateOfBirth"`
+	Sex                string               `bson:"sex" json:"sex"`
+	Nationality        string               `bson:"nationality" json:"nationality"`
+	PassportNumber     string               `bson:"passportNumber" json:"passportNumber"`
+	PassportExpiry     string               `bson:"passportExpiry" json:"passportExpiry"`
+	RegistrationCode   string               `bson:"registrationCode" json:"registrationCode"`
+	Email              string               `bson:"email" json:"email"`
+	AttachmentPortrait *ApplicantAttachment `bson:"attachmentPortrait,omitempty" json:"attachmentPortrait,omitempty"`
+	AttachmentPassport *ApplicantAttachment `bson:"attachmentPassport,omitempty" json:"attachmentPassport,omitempty"`
 
 	VisaS3Key    string `bson:"visaS3Key" json:"visaS3Key"`
 	VisaSent     bool   `bson:"visaSent" json:"visaSent"`
