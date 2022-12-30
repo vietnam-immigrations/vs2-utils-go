@@ -40,6 +40,8 @@ type Config struct {
 	PriorityEmailPartnerTemplateID  int                `bson:"priorityEmailPartnerTemplateId" json:"priorityEmailPartnerTemplateId"`
 	APIRoot                         string             `bson:"apiRoot" json:"apiRoot"`
 	APIKey                          string             `bson:"apiKey" json:"apiKey"`
+	PushoverToken                   string             `bson:"pushoverToken" json:"pushoverToken"`
+	PushoverUsers                   string             `bson:"pushoverUsers" json:"pushoverUsers"`
 }
 
 func GetConfig(ctx context.Context) (*Config, error) {
