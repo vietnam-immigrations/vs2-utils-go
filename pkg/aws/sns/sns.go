@@ -37,7 +37,7 @@ func OrderImported(ctx context.Context, id string) error {
 	if correlationID == nil {
 		correlationID = uuid.New().String()
 	}
-	message := fmt.Sprintf("Order finalized [%s]", id)
+	message := fmt.Sprintf("Order imported [%s]", id)
 	_, err = snsClient.Publish(ctx, &awssns.PublishInput{
 		Message: aws.String(message),
 		MessageAttributes: map[string]types.MessageAttributeValue{
