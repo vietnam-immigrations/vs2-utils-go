@@ -9,9 +9,10 @@ require (
 	github.com/dchest/uniuri v1.2.0
 	github.com/google/uuid v1.3.0
 	github.com/mailjet/mailjet-apiv3-go/v4 v4.0.1
-	github.com/nam-truong-le/lambda-utils-go v1.10.10
+	github.com/nam-truong-le/lambda-utils-go v1.11.1
 	github.com/pkg/errors v0.9.1
 	github.com/pusher/pusher-http-go/v5 v5.1.1
+	github.com/samber/lo v1.37.0
 	github.com/stretchr/testify v1.8.1
 	go.mongodb.org/mongo-driver v1.11.1
 	golang.org/x/text v0.5.0
@@ -43,7 +44,6 @@ require (
 	github.com/mailjet/mailjet-apiv3-go/v3 v3.2.0 // indirect
 	github.com/montanaflynn/stats v0.6.6 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/samber/lo v1.37.0 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
 	github.com/xdg-go/scram v1.1.2 // indirect
