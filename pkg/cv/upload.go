@@ -17,7 +17,7 @@ import (
 	"github.com/nam-truong-le/lambda-utils-go/pkg/aws/ssm"
 	mycontext "github.com/nam-truong-le/lambda-utils-go/pkg/context"
 	"github.com/nam-truong-le/lambda-utils-go/pkg/logger"
-	"github.com/vietnam-immigrations/vs2-utils-go/pkg/db"
+	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 )
 
 // UploadToS3AndSendSNS uploads PDF to S3 and send SNS. Stage must be in context

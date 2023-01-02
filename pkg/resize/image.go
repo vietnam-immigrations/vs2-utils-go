@@ -19,7 +19,7 @@ import (
 	mycontext "github.com/nam-truong-le/lambda-utils-go/pkg/context"
 	"github.com/nam-truong-le/lambda-utils-go/pkg/logger"
 	"github.com/nam-truong-le/lambda-utils-go/pkg/random"
-	vs2ssm "github.com/vietnam-immigrations/vs2-utils-go/pkg/aws/ssm"
+	vs2ssm "github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/aws/ssm"
 )
 
 var extensionsCanBeResize = []string{

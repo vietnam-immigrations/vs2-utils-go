@@ -14,7 +14,7 @@ import (
 	"github.com/samber/lo"
 
 	"github.com/nam-truong-le/lambda-utils-go/pkg/random"
-	vs2ssm "github.com/vietnam-immigrations/vs2-utils-go/pkg/aws/ssm"
+	vs2ssm "github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/aws/ssm"
 
 	"github.com/nam-truong-le/lambda-utils-go/pkg/aws/s3"
 	"github.com/nam-truong-le/lambda-utils-go/pkg/aws/ssm"

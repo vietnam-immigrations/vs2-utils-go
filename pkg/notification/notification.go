@@ -6,7 +6,7 @@ import (
 	"github.com/pusher/pusher-http-go/v5"
 
 	"github.com/nam-truong-le/lambda-utils-go/pkg/logger"
-	"github.com/vietnam-immigrations/vs2-utils-go/pkg/db"
+	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 )
 
 const (
