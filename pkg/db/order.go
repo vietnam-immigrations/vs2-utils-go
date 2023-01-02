@@ -10,7 +10,7 @@ import (
 	"github.com/nam-truong-le/lambda-utils-go/pkg/aws/ssm"
 	"github.com/nam-truong-le/lambda-utils-go/pkg/logger"
 	"github.com/nam-truong-le/lambda-utils-go/pkg/mongodb"
-	vs2context "github.com/vietnam-immigrations/vs2-utils-go/pkg/context"
+	vs2context "github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/context"
 )
 
 const colOrdersName = "orders"

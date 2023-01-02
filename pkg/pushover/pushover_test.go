@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	mycontext "github.com/nam-truong-le/lambda-utils-go/pkg/context"
-	"github.com/vietnam-immigrations/vs2-utils-go/pkg/pushover"
+	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/pushover"
 )
 
 func TestSend(t *testing.T) {

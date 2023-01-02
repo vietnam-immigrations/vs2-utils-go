@@ -11,7 +11,7 @@ import (
 
 	"github.com/nam-truong-le/lambda-utils-go/pkg/aws/s3"
 	"github.com/nam-truong-le/lambda-utils-go/pkg/logger"
-	"github.com/vietnam-immigrations/vs2-utils-go/pkg/db"
+	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 )
 
 func putToS3Bucket(ctx context.Context, result *db.Result, bucket string, fileName string, fileContent io.ReadCloser) (string, error) {

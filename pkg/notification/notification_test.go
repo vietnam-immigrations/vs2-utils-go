@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	mycontext "github.com/nam-truong-le/lambda-utils-go/pkg/context"
-	"github.com/vietnam-immigrations/vs2-utils-go/pkg/notification"
+	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/notification"
 )
 
 func TestCreate(t *testing.T) {

@@ -5,7 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/vietnam-immigrations/vs2-utils-go/pkg/time"
+	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/time"
 )
 
 func TestFromWooDateString(t *testing.T) {
