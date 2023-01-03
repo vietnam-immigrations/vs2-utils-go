@@ -13,13 +13,13 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/lo"
 
-	"github.com/nam-truong-le/lambda-utils-go/pkg/random"
+	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/random"
 	vs2ssm "github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/aws/ssm"
 
-	"github.com/nam-truong-le/lambda-utils-go/pkg/aws/s3"
-	"github.com/nam-truong-le/lambda-utils-go/pkg/aws/ssm"
-	mycontext "github.com/nam-truong-le/lambda-utils-go/pkg/context"
-	"github.com/nam-truong-le/lambda-utils-go/pkg/logger"
+	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/aws/s3"
+	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/aws/ssm"
+	mycontext "github.com/nam-truong-le/lambda-utils-go/v2/pkg/context"
+	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/logger"
 )
 
 type pdfConvertRequest struct {

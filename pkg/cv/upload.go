@@ -13,10 +13,10 @@ import (
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/nam-truong-le/lambda-utils-go/pkg/aws/sns"
-	"github.com/nam-truong-le/lambda-utils-go/pkg/aws/ssm"
-	mycontext "github.com/nam-truong-le/lambda-utils-go/pkg/context"
-	"github.com/nam-truong-le/lambda-utils-go/pkg/logger"
+	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/aws/sns"
+	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/aws/ssm"
+	mycontext "github.com/nam-truong-le/lambda-utils-go/v2/pkg/context"
+	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/logger"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 )
 

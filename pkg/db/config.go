@@ -8,9 +8,9 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/nam-truong-le/lambda-utils-go/pkg/aws/ssm"
-	"github.com/nam-truong-le/lambda-utils-go/pkg/logger"
-	"github.com/nam-truong-le/lambda-utils-go/pkg/mongodb"
+	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/aws/ssm"
+	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/logger"
+	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/mongodb"
 )
 
 const colConfigName = "config"
@@ -24,24 +24,26 @@ func CollectionConfig(ctx context.Context) (*mongo.Collection, error) {
 }
 
 type Config struct {
-	ID                              primitive.ObjectID `bson:"_id" json:"id"`
-	PusherAppID                     string             `bson:"pusherAppId" json:"pusherAppId"`
-	PusherAppKey                    string             `bson:"pusherAppKey" json:"pusherAppKey"`
-	PusherAppSecret                 string             `bson:"pusherAppSecret" json:"pusherAppSecret"`
-	PusherCluster                   string             `bson:"pusherCluster" json:"pusherCluster"`
-	AdminDomain                     string             `bson:"adminDomain" json:"adminDomain"`
-	CustomerDomain                  string             `bson:"customerDomain" json:"customerDomain"`
-	EmailCustomerCC                 string             `bson:"emailCustomerCc" json:"emailCustomerCc"`
-	EmailCustomerTemplateID         int                `bson:"emailCustomerTemplateId" json:"emailCustomerTemplateId"`
-	EmailPartner                    string             `bson:"emailPartner" json:"emailPartner"`
-	EmailPartnerCC                  string             `bson:"emailPartnerCc" json:"emailPartnerCc"`
-	EmailPartnerTemplateID          int                `bson:"emailPartnerTemplateId" json:"emailPartnerTemplateId"`
-	PriorityEmailCustomerTemplateID int                `bson:"priorityEmailCustomerTemplateId" json:"priorityEmailCustomerTemplateId"`
-	PriorityEmailPartnerTemplateID  int                `bson:"priorityEmailPartnerTemplateId" json:"priorityEmailPartnerTemplateId"`
-	APIRoot                         string             `bson:"apiRoot" json:"apiRoot"`
-	APIKey                          string             `bson:"apiKey" json:"apiKey"`
-	PushoverToken                   string             `bson:"pushoverToken" json:"pushoverToken"`
-	PushoverUsers                   string             `bson:"pushoverUsers" json:"pushoverUsers"`
+	ID                                    primitive.ObjectID `bson:"_id" json:"id"`
+	PusherAppID                           string             `bson:"pusherAppId" json:"pusherAppId"`
+	PusherAppKey                          string             `bson:"pusherAppKey" json:"pusherAppKey"`
+	PusherAppSecret                       string             `bson:"pusherAppSecret" json:"pusherAppSecret"`
+	PusherCluster                         string             `bson:"pusherCluster" json:"pusherCluster"`
+	AdminDomain                           string             `bson:"adminDomain" json:"adminDomain"`
+	CustomerDomain                        string             `bson:"customerDomain" json:"customerDomain"`
+	EmailCustomerCC                       string             `bson:"emailCustomerCc" json:"emailCustomerCc"`
+	EmailCustomerTemplateID               int                `bson:"emailCustomerTemplateId" json:"emailCustomerTemplateId"`
+	EmailCustomerPendingReviewTemplateID  int                `bson:"emailCustomerPendingReviewTemplateId" json:"emailCustomerPendingReviewTemplateId"`
+	EmailCustomerRejectedImagesTemplateID int                `bson:"emailCustomerRejectedImagesTemplateId" json:"emailCustomerRejectedImagesTemplateId"`
+	EmailPartner                          string             `bson:"emailPartner" json:"emailPartner"`
+	EmailPartnerCC                        string             `bson:"emailPartnerCc" json:"emailPartnerCc"`
+	EmailPartnerTemplateID                int                `bson:"emailPartnerTemplateId" json:"emailPartnerTemplateId"`
+	PriorityEmailCustomerTemplateID       int                `bson:"priorityEmailCustomerTemplateId" json:"priorityEmailCustomerTemplateId"`
+	PriorityEmailPartnerTemplateID        int                `bson:"priorityEmailPartnerTemplateId" json:"priorityEmailPartnerTemplateId"`
+	APIRoot                               string             `bson:"apiRoot" json:"apiRoot"`
+	APIKey                                string             `bson:"apiKey" json:"apiKey"`
+	PushoverToken                         string             `bson:"pushoverToken" json:"pushoverToken"`
+	PushoverUsers                         string             `bson:"pushoverUsers" json:"pushoverUsers"`
 }
 
 func GetConfig(ctx context.Context) (*Config, error) {
