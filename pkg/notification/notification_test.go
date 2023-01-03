@@ -7,7 +7,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 
-	mycontext "github.com/nam-truong-le/lambda-utils-go/pkg/context"
+	mycontext "github.com/nam-truong-le/lambda-utils-go/v2/pkg/context"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/notification"
 )
 

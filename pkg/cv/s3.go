@@ -9,8 +9,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	awss3 "github.com/aws/aws-sdk-go-v2/service/s3"
 
-	"github.com/nam-truong-le/lambda-utils-go/pkg/aws/s3"
-	"github.com/nam-truong-le/lambda-utils-go/pkg/logger"
+	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/aws/s3"
+	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/logger"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 )
 

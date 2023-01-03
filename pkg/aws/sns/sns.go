@@ -9,10 +9,10 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sns/types"
 	"github.com/google/uuid"
 
-	"github.com/nam-truong-le/lambda-utils-go/pkg/aws/sns"
-	"github.com/nam-truong-le/lambda-utils-go/pkg/aws/ssm"
-	mycontext "github.com/nam-truong-le/lambda-utils-go/pkg/context"
-	"github.com/nam-truong-le/lambda-utils-go/pkg/logger"
+	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/aws/sns"
+	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/aws/ssm"
+	mycontext "github.com/nam-truong-le/lambda-utils-go/v2/pkg/context"
+	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/logger"
 )
 
 const (
