@@ -9,7 +9,7 @@ require (
 	github.com/dchest/uniuri v1.2.0
 	github.com/google/uuid v1.3.0
 	github.com/mailjet/mailjet-apiv3-go/v4 v4.0.1
-	github.com/nam-truong-le/lambda-utils-go/v2 v2.1.0
+	github.com/nam-truong-le/lambda-utils-go/v2 v2.1.1
 	github.com/pusher/pusher-http-go/v5 v5.1.1
 	github.com/samber/lo v1.37.0
 	github.com/stretchr/testify v1.8.1
@@ -18,7 +18,7 @@ require (
 )
 
 require (
-	github.com/aws/aws-lambda-go v1.36.1 // indirect
+	github.com/aws/aws-lambda-go v1.37.0 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.10 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.18.8 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.8 // indirect
