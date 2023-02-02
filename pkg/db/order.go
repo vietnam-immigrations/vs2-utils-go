@@ -7,9 +7,9 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/aws/ssm"
-	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/logger"
-	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/mongodb"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ssm"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/mongodb"
 	vs2context "github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/context"
 )
 
