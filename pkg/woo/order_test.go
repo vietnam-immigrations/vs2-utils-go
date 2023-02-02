@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	mycontext "github.com/nam-truong-le/lambda-utils-go/v2/pkg/context"
+	mycontext "github.com/nam-truong-le/lambda-utils-go/v3/pkg/context"
 )
 
 func TestGetOrder(t *testing.T) {

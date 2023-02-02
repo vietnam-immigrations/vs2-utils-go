@@ -8,8 +8,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/aws/ssm"
-	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/logger"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ssm"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
 )
 
 func GetOrder(ctx context.Context, orderID string) (*Order, error) {

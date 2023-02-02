@@ -5,7 +5,7 @@ import (
 
 	"github.com/pusher/pusher-http-go/v5"
 
-	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/logger"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 )
 

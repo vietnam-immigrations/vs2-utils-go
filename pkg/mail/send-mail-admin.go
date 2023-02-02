@@ -10,9 +10,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/mailjet/mailjet-apiv3-go/v4"
 
-	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/aws/s3"
-	"github.com/nam-truong-le/lambda-utils-go/v2/pkg/logger"
-	mymailjet "github.com/nam-truong-le/lambda-utils-go/v2/pkg/mailjet"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/s3"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
+	mymailjet "github.com/nam-truong-le/lambda-utils-go/v3/pkg/mailjet"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/aws/ssm"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/notification"
