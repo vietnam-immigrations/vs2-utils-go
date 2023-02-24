@@ -9,7 +9,7 @@ require (
 	github.com/dchest/uniuri v1.2.0
 	github.com/google/uuid v1.3.0
 	github.com/mailjet/mailjet-apiv3-go/v4 v4.0.1
-	github.com/nam-truong-le/lambda-utils-go/v3 v3.3.14
+	github.com/nam-truong-le/lambda-utils-go/v3 v3.3.19
 	github.com/pusher/pusher-http-go/v5 v5.1.1
 	github.com/samber/lo v1.37.0
 	github.com/stretchr/testify v1.8.1
@@ -31,7 +31,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.24 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.23 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.13.23 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssm v1.35.4 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ssm v1.35.5 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.12.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.14.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.18.5 // indirect
