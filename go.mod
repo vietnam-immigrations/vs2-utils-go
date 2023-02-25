@@ -12,7 +12,7 @@ require (
 	github.com/nam-truong-le/lambda-utils-go/v3 v3.3.19
 	github.com/pusher/pusher-http-go/v5 v5.1.1
 	github.com/samber/lo v1.37.0
-	github.com/stretchr/testify v1.8.1
+	github.com/stretchr/testify v1.8.2
 	go.mongodb.org/mongo-driver v1.11.2
 	golang.org/x/text v0.7.0
 )
