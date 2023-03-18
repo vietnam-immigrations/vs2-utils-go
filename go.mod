@@ -13,7 +13,7 @@ require (
 	github.com/pusher/pusher-http-go/v5 v5.1.1
 	github.com/samber/lo v1.37.0
 	github.com/stretchr/testify v1.8.2
-	go.mongodb.org/mongo-driver v1.11.2
+	go.mongodb.org/mongo-driver v1.11.3
 	golang.org/x/text v0.8.0
 )
 
