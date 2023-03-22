@@ -11,7 +11,7 @@ require (
 	github.com/mailjet/mailjet-apiv3-go/v4 v4.0.1
 	github.com/nam-truong-le/lambda-utils-go/v3 v3.3.32
 	github.com/pusher/pusher-http-go/v5 v5.1.1
-	github.com/samber/lo v1.37.0
+	github.com/samber/lo v1.38.1
 	github.com/stretchr/testify v1.8.2
 	go.mongodb.org/mongo-driver v1.11.3
 	golang.org/x/text v0.8.0
