@@ -9,7 +9,7 @@ require (
 	github.com/dchest/uniuri v1.2.0
 	github.com/google/uuid v1.3.0
 	github.com/mailjet/mailjet-apiv3-go/v4 v4.0.1
-	github.com/nam-truong-le/lambda-utils-go/v3 v3.3.41
+	github.com/nam-truong-le/lambda-utils-go/v3 v3.3.42
 	github.com/pusher/pusher-http-go/v5 v5.1.1
 	github.com/samber/lo v1.38.1
 	github.com/stretchr/testify v1.8.2
