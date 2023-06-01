@@ -2,14 +2,15 @@ package mail
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"strings"
 
-	"github.com/mailjet/mailjet-apiv3-go/v4"
+	"github.com/samber/lo"
 
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ses"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ssm"
 	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
-	mymailjet "github.com/nam-truong-le/lambda-utils-go/v3/pkg/mailjet"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/mail"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 )
 
@@ -47,84 +48,60 @@ func SendCustomer(ctx context.Context, order *db.Order) error {
 		return err
 	}
 
-	to := mailjet.RecipientsV31{
-		{
-			Email: order.Billing.Email,
-			Name:  fmt.Sprintf("%s %s", order.Billing.LastName, order.Billing.FirstName),
-		},
-	}
-	if order.Billing.Email2 != "" {
-		to = append(to, mailjet.RecipientV31{
-			Email: order.Billing.Email2,
-			Name:  fmt.Sprintf("%s %s", order.Billing.LastName, order.Billing.FirstName),
-		})
-	}
-
-	applicants := make([]SendCustomerOptionsApplicant, 0)
-	for _, app := range order.Applicants {
-		applicants = append(applicants, SendCustomerOptionsApplicant{
-			FirstName:          app.FirstName,
-			LastName:           app.LastName,
-			Sex:                app.Sex,
-			DateOfBirth:        app.DateOfBirth,
-			Nationality:        app.Nationality,
-			PassportNumber:     app.PassportNumber,
-			PassportValidUntil: app.PassportExpiry,
-		})
-	}
-
 	// extra services
-	ft := make([]string, 0)
+	extraServices := make([]string, 0)
 	if order.Trip.FastTrack != "No" {
-		ft = append(ft, fmt.Sprintf("%s (flight: %s)", order.Trip.FastTrack, order.Trip.Flight))
+		extraServices = append(extraServices, fmt.Sprintf("%s (flight: %s)", order.Trip.FastTrack, order.Trip.Flight))
 	}
 	if order.Trip.CarPickup {
-		ft = append(ft, fmt.Sprintf("car pick-up (hotel: %s)", order.Trip.CarPickupAddress))
+		extraServices = append(extraServices, fmt.Sprintf("car pick-up (hotel: %s)", order.Trip.CarPickupAddress))
 	}
-	ftText := strings.Join(ft, ", ")
+	extraServicesText := strings.Join(extraServices, ", ")
 
-	variables := SendCustomerOptions{
-		Applicants:     applicants,
-		OrderNumber:    order.Number,
-		ArrivalDate:    order.Trip.ArrivalDate,
-		Entry:          order.Trip.Checkpoint,
-		Flight:         order.Trip.Flight,
-		Hotel:          order.Trip.CarPickupAddress,
-		ProcessingTime: order.Trip.ProcessingTime,
-		Telephone:      order.Billing.Phone,
-		Email:          order.Billing.Email,
-		SecondaryEmail: order.Billing.Email2,
-		ExtraServices:  ftText,
-		StatusUrl:      fmt.Sprintf("https://%s/#/?order=%s&secret=%s", cfg.CustomerDomain, order.Number, order.OrderKey),
-	}
-	jsonVariables, err := json.Marshal(variables)
+	mjmlUsername, err := ssm.GetParameter(ctx, "/mjml/username", false)
 	if err != nil {
-		return nil
+		return err
 	}
-	rawVariables := new(map[string]interface{})
-	err = json.Unmarshal(jsonVariables, rawVariables)
+	mjmlPassword, err := ssm.GetParameter(ctx, "/mjml/password", true)
 	if err != nil {
-		return nil
+		return err
 	}
-
-	log.Infof("%+v", variables)
-
-	body := mailjet.InfoMessagesV31{
-		From: &mailjet.RecipientV31{
-			Email: "info@vietnam-immigrations.org",
-			Name:  "Vietnam Visa Online",
-		},
-		To: &to,
-		Cc: &mailjet.RecipientsV31{
-			mailjet.RecipientV31{
-				Email: cfg.EmailCustomerCC,
-			},
-		},
-		TemplateID:       cfg.EmailCustomerTemplateID,
-		TemplateLanguage: true,
-		Subject:          fmt.Sprintf("Vietnam Visa Online Order #%s", order.Number),
-		Variables:        *rawVariables,
+	mailHTML, err := mail.Render(ctx, templateEmailCustomer, templateEmailCustomerProps{
+		OrderNumber:      order.Number,
+		ArrivalDate:      order.Trip.ArrivalDate,
+		Entry:            order.Trip.Checkpoint,
+		Flight:           order.Trip.Flight,
+		Hotel:            order.Trip.CarPickupAddress,
+		ProcessingTime:   order.Trip.ProcessingTime,
+		Telephone:        order.Billing.Phone,
+		Email:            order.Billing.Email,
+		Email2:           order.Billing.Email2,
+		HasExtraServices: len(extraServices) > 0,
+		ExtraServices:    extraServicesText,
+		Applicants: lo.Map(order.Applicants, func(app db.Applicant, _ int) templateEmailCustomerPropsApplicant {
+			return templateEmailCustomerPropsApplicant{
+				Name:               fmt.Sprintf("%s, %s", app.LastName, app.FirstName),
+				Nationality:        app.Nationality,
+				Passport:           app.PassportNumber,
+				Birthday:           app.DateOfBirth,
+				PassportValidUntil: app.PassportExpiry,
+				Gender:             app.Sex,
+			}
+		}),
+		TrackingURL: fmt.Sprintf("https://%s/#/?order=%s&secret=%s", cfg.CustomerDomain, order.Number, order.OrderKey),
+	}, mjmlUsername, mjmlPassword)
+	if err != nil {
+		return err
 	}
-
-	return mymailjet.Send(ctx, body)
+	err = ses.Send(ctx, ses.SendProps{
+		From: "info@vietnam-immigrations.org",
+		To: lo.Compact([]string{
+			"info@vietnam-immigrations.org",
+			order.Billing.Email, order.Billing.Email2,
+		}),
+		ReplyTo: "info@vietnam-immigrations.org",
+		Subject: fmt.Sprintf("Vietnam Visa Online Order #%s", order.Number),
+		HTML:    *mailHTML,
+	})
+	return err
 }
