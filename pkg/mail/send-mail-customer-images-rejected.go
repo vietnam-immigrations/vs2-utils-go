@@ -2,13 +2,15 @@ package mail
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 
 	"github.com/mailjet/mailjet-apiv3-go/v4"
+	"github.com/samber/lo"
 
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ses"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ssm"
 	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
-	mymailjet "github.com/nam-truong-le/lambda-utils-go/v3/pkg/mailjet"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/mail"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 )
 
@@ -39,38 +41,30 @@ func SendCustomerImagesRejected(ctx context.Context, order *db.Order) error {
 		})
 	}
 
-	variables := SendCustomerImagesRejectedOptions{
+	mjmlUsername, err := ssm.GetParameter(ctx, "/mjml/username", false)
+	if err != nil {
+		return err
+	}
+	mjmlPassword, err := ssm.GetParameter(ctx, "/mjml/password", true)
+	if err != nil {
+		return err
+	}
+	mailHTML, err := mail.Render(ctx, templateEmailImageRejected, templateEmailImageRejectedProps{
 		OrderNumber: order.Number,
-		StatusUrl:   fmt.Sprintf("https://%s/#/?order=%s&secret=%s", cfg.CustomerDomain, order.Number, order.OrderKey),
-	}
-	jsonVariables, err := json.Marshal(variables)
+		UploadURL:   fmt.Sprintf("https://%s/#/?order=%s&secret=%s", cfg.CustomerDomain, order.Number, order.OrderKey),
+	}, mjmlUsername, mjmlPassword)
 	if err != nil {
-		return nil
+		return err
 	}
-	rawVariables := new(map[string]interface{})
-	err = json.Unmarshal(jsonVariables, rawVariables)
-	if err != nil {
-		return nil
-	}
-
-	log.Infof("%+v", rawVariables)
-
-	body := mailjet.InfoMessagesV31{
-		From: &mailjet.RecipientV31{
-			Email: "info@vietnam-immigrations.org",
-			Name:  "Vietnam Visa Online",
-		},
-		To: &to,
-		Cc: &mailjet.RecipientsV31{
-			mailjet.RecipientV31{
-				Email: cfg.EmailCustomerCC,
-			},
-		},
-		TemplateID:       cfg.EmailCustomerRejectedImagesTemplateID,
-		TemplateLanguage: true,
-		Subject:          fmt.Sprintf("[IMPORTANT - PLEASE PROVIDE NEW IMAGES] Vietnam Visa Online Order #%s", order.Number),
-		Variables:        *rawVariables,
-	}
-
-	return mymailjet.Send(ctx, body)
+	err = ses.Send(ctx, ses.SendProps{
+		From: "info@vietnam-immigrations.org",
+		To: lo.Compact([]string{
+			"info@vietnam-immigrations.org",
+			order.Billing.Email, order.Billing.Email2,
+		}),
+		ReplyTo: "info@vietnam-immigrations.org",
+		Subject: fmt.Sprintf("[IMPORTANT - PLEASE PROVIDE NEW IMAGES] Vietnam Visa Online Order #%s", order.Number),
+		HTML:    *mailHTML,
+	})
+	return err
 }

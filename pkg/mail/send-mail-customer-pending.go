@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/mailjet/mailjet-apiv3-go/v4"
 	"github.com/samber/lo"
 
 	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ses"
@@ -28,19 +27,6 @@ func SendCustomerPending(ctx context.Context, order *db.Order) error {
 		return err
 	}
 
-	to := mailjet.RecipientsV31{
-		{
-			Email: order.Billing.Email,
-			Name:  fmt.Sprintf("%s %s", order.Billing.LastName, order.Billing.FirstName),
-		},
-	}
-	if order.Billing.Email2 != "" {
-		to = append(to, mailjet.RecipientV31{
-			Email: order.Billing.Email2,
-			Name:  fmt.Sprintf("%s %s", order.Billing.LastName, order.Billing.FirstName),
-		})
-	}
-
 	mjmlUsername, err := ssm.GetParameter(ctx, "/mjml/username", false)
 	if err != nil {
 		return err
@@ -49,7 +35,6 @@ func SendCustomerPending(ctx context.Context, order *db.Order) error {
 	if err != nil {
 		return err
 	}
-
 	mailHTML, err := mail.Render(ctx, templateEmailPending, templateEmailPendingProps{
 		OrderNumber: order.Number,
 		TrackingURL: fmt.Sprintf("https://%s/#/?order=%s&secret=%s", cfg.CustomerDomain, order.Number, order.OrderKey),
