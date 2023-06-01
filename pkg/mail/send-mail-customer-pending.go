@@ -8,6 +8,7 @@ import (
 	"github.com/samber/lo"
 
 	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ses"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ssm"
 	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
 	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/mail"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
@@ -40,10 +41,19 @@ func SendCustomerPending(ctx context.Context, order *db.Order) error {
 		})
 	}
 
+	mjmlUsername, err := ssm.GetParameter(ctx, "/mjml/username", false)
+	if err != nil {
+		return err
+	}
+	mjmlPassword, err := ssm.GetParameter(ctx, "/mjml/password", true)
+	if err != nil {
+		return err
+	}
+
 	mailHTML, err := mail.Render(ctx, templateEmailPending, templateEmailPendingProps{
 		OrderNumber: order.Number,
 		TrackingURL: fmt.Sprintf("https://%s/#/?order=%s&secret=%s", cfg.CustomerDomain, order.Number, order.OrderKey),
-	}, "e9042278-5556-4798-952e-34f1ce14dcf1", "47334277-ded2-4b14-a20c-a8a54557ae6b")
+	}, mjmlUsername, mjmlPassword)
 	if err != nil {
 		return err
 	}
