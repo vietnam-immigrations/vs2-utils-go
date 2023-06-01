@@ -2,13 +2,14 @@ package mail
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 
 	"github.com/mailjet/mailjet-apiv3-go/v4"
+	"github.com/samber/lo"
 
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ses"
 	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
-	mymailjet "github.com/nam-truong-le/lambda-utils-go/v3/pkg/mailjet"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/mail"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 )
 
@@ -39,38 +40,19 @@ func SendCustomerPending(ctx context.Context, order *db.Order) error {
 		})
 	}
 
-	variables := SendCustomerPendingOptions{
+	mailHTML, err := mail.Render(ctx, templateEmailPending, templateEmailPendingProps{
 		OrderNumber: order.Number,
-		StatusUrl:   fmt.Sprintf("https://%s/#/?order=%s&secret=%s", cfg.CustomerDomain, order.Number, order.OrderKey),
-	}
-	jsonVariables, err := json.Marshal(variables)
+		TrackingURL: fmt.Sprintf("https://%s/#/?order=%s&secret=%s", cfg.CustomerDomain, order.Number, order.OrderKey),
+	}, "e9042278-5556-4798-952e-34f1ce14dcf1", "47334277-ded2-4b14-a20c-a8a54557ae6b")
 	if err != nil {
-		return nil
+		return err
 	}
-	rawVariables := new(map[string]interface{})
-	err = json.Unmarshal(jsonVariables, rawVariables)
-	if err != nil {
-		return nil
-	}
-
-	log.Infof("%+v", rawVariables)
-
-	body := mailjet.InfoMessagesV31{
-		From: &mailjet.RecipientV31{
-			Email: "info@vietnam-immigrations.org",
-			Name:  "Vietnam Visa Online",
-		},
-		To: &to,
-		Cc: &mailjet.RecipientsV31{
-			mailjet.RecipientV31{
-				Email: cfg.EmailCustomerCC,
-			},
-		},
-		TemplateID:       cfg.EmailCustomerPendingReviewTemplateID,
-		TemplateLanguage: true,
-		Subject:          fmt.Sprintf("[Pending Review] Vietnam Visa Online Order #%s", order.Number),
-		Variables:        *rawVariables,
-	}
-
-	return mymailjet.Send(ctx, body)
+	err = ses.Send(ctx, ses.SendProps{
+		From:    "info@vietnam-immigrations.org",
+		To:      lo.Compact([]string{"info@vietnam-immigrations.org", order.Billing.Email, order.Billing.Email2}),
+		ReplyTo: "info@vietnam-immigrations.org",
+		Subject: fmt.Sprintf("[Pending Review] Vietnam Visa Online Order #%s", order.Number),
+		HTML:    *mailHTML,
+	})
+	return err
 }
