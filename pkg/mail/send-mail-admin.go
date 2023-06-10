@@ -2,56 +2,29 @@ package mail
 
 import (
 	"context"
-	"encoding/base64"
-	"encoding/json"
 	"fmt"
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/mailjet/mailjet-apiv3-go/v4"
+	"github.com/samber/lo"
 
 	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/s3"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ses"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ssm"
 	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
-	mymailjet "github.com/nam-truong-le/lambda-utils-go/v3/pkg/mailjet"
-	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/aws/ssm"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/mail"
+	vs2ssm "github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/aws/ssm"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/notification"
 )
-
-type SendAdminOptionsApplicant struct {
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
-}
-
-type SendAdminOptions struct {
-	Applicants              []SendAdminOptionsApplicant `json:"applicants"`
-	ArrivalDate             string                      `json:"arrivalDate"`
-	Entry                   string                      `json:"entry"`
-	ProcessingTimeInContent string                      `json:"processingTimeInContent"`
-	ExtraServices           string                      `json:"extraServices"`
-}
 
 func SendAdmin(ctx context.Context, order *db.Order) error {
 	log := logger.FromContext(ctx)
 	log.Infof("send mail to partner for order [%s]", order.Number)
 
-	cnf, err := db.GetConfig(ctx)
+	cfg, err := db.GetConfig(ctx)
 	if err != nil {
 		return err
-	}
-
-	to := mailjet.RecipientsV31{
-		{
-			Email: cnf.EmailPartner,
-		},
-	}
-
-	applicants := make([]SendAdminOptionsApplicant, 0)
-	for _, app := range order.Applicants {
-		applicants = append(applicants, SendAdminOptionsApplicant{
-			FirstName: app.FirstName,
-			LastName:  app.LastName,
-		})
 	}
 
 	// subject
@@ -65,27 +38,6 @@ func SendAdmin(ctx context.Context, order *db.Order) error {
 	)
 	processingTimeInContent := processingTimeTexts[order.Trip.ProcessingTime]
 
-	// attachments
-	attachments := make(mailjet.AttachmentsV31, 0)
-	for _, app := range order.Applicants {
-		portraitAtt, err := s3.ReadFileBucketSSM(ctx, ssm.S3BucketAttachment, app.AttachmentPortrait.S3Key)
-		if err != nil {
-			return err
-		}
-		attachments = append(attachments, mailjet.AttachmentV31{
-			Base64Content: base64.StdEncoding.EncodeToString(portraitAtt),
-			Filename:      fileNameFromS3Key(app.AttachmentPortrait.S3Key),
-			ContentType:   "application/octet-stream",
-		})
-
-		passportAtt, err := s3.ReadFileBucketSSM(ctx, ssm.S3BucketAttachment, app.AttachmentPassport.S3Key)
-		attachments = append(attachments, mailjet.AttachmentV31{
-			Base64Content: base64.StdEncoding.EncodeToString(passportAtt),
-			Filename:      fileNameFromS3Key(app.AttachmentPassport.S3Key),
-			ContentType:   "application/octet-stream",
-		})
-	}
-
 	// extra services
 	ft := make([]string, 0)
 	if order.Trip.FastTrack != "No" {
@@ -96,42 +48,62 @@ func SendAdmin(ctx context.Context, order *db.Order) error {
 	}
 	ftText := strings.Join(ft, ", ")
 
-	variables := SendAdminOptions{
-		Applicants:              applicants,
-		ArrivalDate:             order.Trip.ArrivalDate,
-		Entry:                   order.Trip.Checkpoint,
-		ProcessingTimeInContent: processingTimeInContent,
-		ExtraServices:           ftText,
-	}
-	jsonVariables, err := json.Marshal(variables)
+	mjmlUsername, err := ssm.GetParameter(ctx, "/mjml/username", false)
 	if err != nil {
-		return nil
+		return err
 	}
-	rawVariables := new(map[string]interface{})
-	err = json.Unmarshal(jsonVariables, rawVariables)
+	mjmlPassword, err := ssm.GetParameter(ctx, "/mjml/password", true)
 	if err != nil {
-		return nil
+		return err
+	}
+	mailHTML, err := mail.Render(ctx, templateEmailAdmin, templateEmailAdminProps{
+		Entry:       order.Trip.Checkpoint,
+		ArrivalDate: order.Trip.ArrivalDate,
+		Applicants: lo.Map(order.Applicants, func(app db.Applicant, _ int) templateEmailAdminPropsApplicant {
+			return templateEmailAdminPropsApplicant{
+				LastName:  app.LastName,
+				FirstName: app.FirstName,
+			}
+		}),
+		ProcessingTime: processingTimeInContent,
+		ExtraServices:  ftText,
+	}, mjmlUsername, mjmlPassword)
+	if err != nil {
+		return err
 	}
 
-	body := mailjet.InfoMessagesV31{
-		From: &mailjet.RecipientV31{
-			Email: "info@vietnam-immigrations.org",
-			Name:  "Vietnam Visa Online",
-		},
-		To: &to,
-		Cc: &mailjet.RecipientsV31{
-			mailjet.RecipientV31{
-				Email: cnf.EmailPartnerCC,
-			},
-		},
-		TemplateID:       cnf.EmailPartnerTemplateID,
-		TemplateLanguage: true,
-		Subject:          subject,
-		Attachments:      &attachments,
-		Variables:        *rawVariables,
-	}
+	err = ses.Send(ctx, ses.SendProps{
+		From:    mailAddressInfo,
+		To:      []string{cfg.EmailPartner},
+		ReplyTo: mailAddressInfo,
+		BCC:     nil,
+		CC:      []string{cfg.EmailPartnerCC},
+		Subject: subject,
+		HTML:    *mailHTML,
+		Attachments: lo.FlatMap(order.Applicants, func(app db.Applicant, _ int) []ses.SendPropsAttachment {
+			portraitAtt, err := s3.ReadFileBucketSSM(ctx, vs2ssm.S3BucketAttachment, app.AttachmentPortrait.S3Key)
+			if err != nil {
+				log.Errorf("Failed to load portrait file [%s]: %s", app.AttachmentPortrait.S3Key, err)
+				return nil
+			}
+			passportAtt, err := s3.ReadFileBucketSSM(ctx, vs2ssm.S3BucketAttachment, app.AttachmentPassport.S3Key)
+			if err != nil {
+				log.Errorf("Failed to load passport file [%s]: %s", app.AttachmentPassport.S3Key, err)
+			}
 
-	err = mymailjet.Send(ctx, body)
+			return []ses.SendPropsAttachment{
+				{
+					Name: fileNameFromS3Key(app.AttachmentPortrait.S3Key),
+					Data: portraitAtt,
+				},
+				{
+					Name: fileNameFromS3Key(app.AttachmentPassport.S3Key),
+					Data: passportAtt,
+				},
+			}
+		}),
+	})
+
 	if err != nil {
 		_ = notification.Create(ctx, notification.Notification{
 			ID:         uuid.New().String(),
