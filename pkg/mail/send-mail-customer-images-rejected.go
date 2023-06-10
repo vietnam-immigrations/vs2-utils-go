@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/mailjet/mailjet-apiv3-go/v4"
 	"github.com/samber/lo"
 
 	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ses"
@@ -14,11 +13,6 @@ import (
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 )
 
-type SendCustomerImagesRejectedOptions struct {
-	OrderNumber string `json:"orderNumber"`
-	StatusUrl   string `json:"statusUrl"`
-}
-
 func SendCustomerImagesRejected(ctx context.Context, order *db.Order) error {
 	log := logger.FromContext(ctx)
 	log.Infof("send email to customer for order [%s]", order.Number)
@@ -26,19 +20,6 @@ func SendCustomerImagesRejected(ctx context.Context, order *db.Order) error {
 	cfg, err := db.GetConfig(ctx)
 	if err != nil {
 		return err
-	}
-
-	to := mailjet.RecipientsV31{
-		{
-			Email: order.Billing.Email,
-			Name:  fmt.Sprintf("%s %s", order.Billing.LastName, order.Billing.FirstName),
-		},
-	}
-	if order.Billing.Email2 != "" {
-		to = append(to, mailjet.RecipientV31{
-			Email: order.Billing.Email2,
-			Name:  fmt.Sprintf("%s %s", order.Billing.LastName, order.Billing.FirstName),
-		})
 	}
 
 	mjmlUsername, err := ssm.GetParameter(ctx, "/mjml/username", false)
@@ -57,12 +38,12 @@ func SendCustomerImagesRejected(ctx context.Context, order *db.Order) error {
 		return err
 	}
 	err = ses.Send(ctx, ses.SendProps{
-		From: "info@vietnam-immigrations.org",
+		From: mailAddressInfo,
 		To: lo.Compact([]string{
-			"info@vietnam-immigrations.org",
 			order.Billing.Email, order.Billing.Email2,
 		}),
-		ReplyTo: "info@vietnam-immigrations.org",
+		CC:      []string{cfg.EmailCustomerCC},
+		ReplyTo: mailAddressInfo,
 		Subject: fmt.Sprintf("[IMPORTANT - PLEASE PROVIDE NEW IMAGES] Vietnam Visa Online Order #%s", order.Number),
 		HTML:    *mailHTML,
 	})

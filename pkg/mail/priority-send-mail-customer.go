@@ -2,27 +2,17 @@ package mail
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"strings"
 
-	"github.com/mailjet/mailjet-apiv3-go/v4"
+	"github.com/samber/lo"
 
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ses"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ssm"
 	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
-	mymailjet "github.com/nam-truong-le/lambda-utils-go/v3/pkg/mailjet"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/mail"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 )
-
-type SendPriorityCustomerOptionsApplicant struct {
-	Title            string `json:"title"`
-	RegistrationCode string `json:"registrationCode"`
-}
-
-type SendPriorityCustomerOptions struct {
-	FullName      string                                 `json:"fullName"`
-	Applicants    []SendPriorityCustomerOptionsApplicant `json:"applicants"`
-	ExtraServices string                                 `json:"extraServices"`
-}
 
 func SendPriorityCustomer(ctx context.Context, order *db.Order) error {
 	log := logger.FromContext(ctx)
@@ -33,67 +23,36 @@ func SendPriorityCustomer(ctx context.Context, order *db.Order) error {
 		return err
 	}
 
-	to := mailjet.RecipientsV31{
-		{
-			Email: order.Billing.Email,
-			Name:  fmt.Sprintf("%s %s", order.Billing.LastName, order.Billing.FirstName),
-		},
-	}
-	if order.Billing.Email2 != "" {
-		to = append(to, mailjet.RecipientV31{
-			Email: order.Billing.Email2,
-			Name:  fmt.Sprintf("%s %s", order.Billing.LastName, order.Billing.FirstName),
-		})
-	}
-
-	applicants := make([]SendPriorityCustomerOptionsApplicant, 0)
-	for i, app := range order.Applicants {
-		applicants = append(applicants, SendPriorityCustomerOptionsApplicant{
-			Title:            fmt.Sprintf("Applicant %d", i+1),
-			RegistrationCode: app.RegistrationCode,
-		})
-	}
-
-	// extra services
-	ft := make([]string, 0)
-	if order.Trip.FastTrack != "No" {
-		ft = append(ft, fmt.Sprintf("%s (flight: %s)", order.Trip.FastTrack, order.Trip.Flight))
-	}
-	ftText := strings.Join(ft, ", ")
-
-	variables := SendPriorityCustomerOptions{
-		FullName:      strings.ToUpper(fmt.Sprintf("%s %s", order.Billing.FirstName, order.Billing.LastName)),
-		Applicants:    applicants,
-		ExtraServices: ftText,
-	}
-	jsonVariables, err := json.Marshal(variables)
+	mjmlUsername, err := ssm.GetParameter(ctx, "/mjml/username", false)
 	if err != nil {
-		return nil
+		return err
 	}
-	rawVariables := new(map[string]interface{})
-	err = json.Unmarshal(jsonVariables, rawVariables)
+	mjmlPassword, err := ssm.GetParameter(ctx, "/mjml/password", true)
 	if err != nil {
-		return nil
+		return err
 	}
-
-	log.Infof("%+v", rawVariables)
-
-	body := mailjet.InfoMessagesV31{
-		From: &mailjet.RecipientV31{
-			Email: "info@vietnam-immigrations.org",
-			Name:  "Vietnam Visa Online",
-		},
-		To: &to,
-		Cc: &mailjet.RecipientsV31{
-			mailjet.RecipientV31{
-				Email: cfg.EmailCustomerCC,
-			},
-		},
-		TemplateID:       cfg.PriorityEmailCustomerTemplateID,
-		TemplateLanguage: true,
-		Subject:          fmt.Sprintf("Vietnam Visa Priority Handling #%s", order.Number),
-		Variables:        *rawVariables,
+	mailHTML, err := mail.Render(ctx, templateEmailPriorityCustomer, templateEmailPriorityCustomerProps{
+		FullName: strings.ToUpper(fmt.Sprintf("%s %s", order.Billing.FirstName, order.Billing.LastName)),
+		Applicants: lo.Map(order.Applicants, func(app db.Applicant, i int) templateEmailPriorityCustomerPropsApplicant {
+			return templateEmailPriorityCustomerPropsApplicant{
+				Title:            fmt.Sprintf("Applicant %d", i+1),
+				RegistrationCode: app.RegistrationCode,
+			}
+		}),
+	}, mjmlUsername, mjmlPassword)
+	if err != nil {
+		return err
 	}
+	err = ses.Send(ctx, ses.SendProps{
+		From:        mailAddressInfo,
+		To:          lo.Compact([]string{order.Billing.Email, order.Billing.Email2}),
+		ReplyTo:     mailAddressInfo,
+		BCC:         nil,
+		CC:          []string{cfg.EmailCustomerCC},
+		Subject:     fmt.Sprintf("Vietnam Visa Priority Handling #%s", order.Number),
+		HTML:        *mailHTML,
+		Attachments: nil,
+	})
 
-	return mymailjet.Send(ctx, body)
+	return err
 }

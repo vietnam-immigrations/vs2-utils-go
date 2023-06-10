@@ -17,3 +17,7 @@ const (
 	processingTimeSameDay = "Same day"
 	processingTime4Hours  = "Urgent"
 )
+
+const (
+	mailAddressInfo = "info@vietnam-immigrations.org"
+)
