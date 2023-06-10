@@ -13,11 +13,6 @@ import (
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 )
 
-type SendCustomerPendingOptions struct {
-	OrderNumber string `json:"orderNumber"`
-	StatusUrl   string `json:"statusUrl"`
-}
-
 func SendCustomerPending(ctx context.Context, order *db.Order) error {
 	log := logger.FromContext(ctx)
 	log.Infof("send email to customer for order [%s]", order.Number)
@@ -43,9 +38,10 @@ func SendCustomerPending(ctx context.Context, order *db.Order) error {
 		return err
 	}
 	err = ses.Send(ctx, ses.SendProps{
-		From:    "info@vietnam-immigrations.org",
-		To:      lo.Compact([]string{"info@vietnam-immigrations.org", order.Billing.Email, order.Billing.Email2}),
-		ReplyTo: "info@vietnam-immigrations.org",
+		From:    mailAddressInfo,
+		To:      lo.Compact([]string{order.Billing.Email, order.Billing.Email2}),
+		CC:      []string{cfg.EmailCustomerCC},
+		ReplyTo: mailAddressInfo,
 		Subject: fmt.Sprintf("[Pending Review] Vietnam Visa Online Order #%s", order.Number),
 		HTML:    *mailHTML,
 	})

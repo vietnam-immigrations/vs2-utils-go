@@ -69,12 +69,12 @@ func SendCustomer(ctx context.Context, order *db.Order) error {
 		return err
 	}
 	err = ses.Send(ctx, ses.SendProps{
-		From: "info@vietnam-immigrations.org",
+		From: mailAddressInfo,
 		To: lo.Compact([]string{
-			"info@vietnam-immigrations.org",
 			order.Billing.Email, order.Billing.Email2,
 		}),
-		ReplyTo: "info@vietnam-immigrations.org",
+		CC:      []string{cfg.EmailCustomerCC},
+		ReplyTo: mailAddressInfo,
 		Subject: fmt.Sprintf("Vietnam Visa Online Order #%s", order.Number),
 		HTML:    *mailHTML,
 	})
