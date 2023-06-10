@@ -2,15 +2,16 @@ package mail
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"strings"
 
 	"github.com/google/uuid"
-	"github.com/mailjet/mailjet-apiv3-go/v4"
+	"github.com/samber/lo"
 
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ses"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ssm"
 	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
-	mymailjet "github.com/nam-truong-le/lambda-utils-go/v3/pkg/mailjet"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/mail"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/notification"
 )
@@ -37,20 +38,6 @@ func SendPriorityAdmin(ctx context.Context, order *db.Order) error {
 		return err
 	}
 
-	to := mailjet.RecipientsV31{
-		{
-			Email: cfg.EmailPartner,
-		},
-	}
-
-	applicants := make([]SendPriorityAdminOptionsApplicant, 0)
-	for _, app := range order.Applicants {
-		applicants = append(applicants, SendPriorityAdminOptionsApplicant{
-			RegistrationCode: app.RegistrationCode,
-			Email:            app.Email,
-		})
-	}
-
 	// subject
 	processingTimeText := processingTimeTexts[order.Trip.ProcessingTime]
 	subject := fmt.Sprintf(
@@ -61,7 +48,6 @@ func SendPriorityAdmin(ctx context.Context, order *db.Order) error {
 		order.Trip.ArrivalDate,
 		processingTimeText,
 	)
-
 	// extra services
 	ft := make([]string, 0)
 	if order.Trip.FastTrack != "No" {
@@ -69,41 +55,41 @@ func SendPriorityAdmin(ctx context.Context, order *db.Order) error {
 	}
 	ftText := strings.Join(ft, ", ")
 
-	variables := SendPriorityAdminOptions{
-		Applicants:              applicants,
-		ArrivalDate:             order.Trip.ArrivalDate,
-		Entry:                   order.Trip.Checkpoint,
-		ProcessingTimeInContent: processingTimeText,
-		ExtraServices:           ftText,
-	}
-	jsonVariables, err := json.Marshal(variables)
+	mjmlUsername, err := ssm.GetParameter(ctx, "/mjml/username", false)
 	if err != nil {
 		return err
 	}
-	rawVariables := new(map[string]interface{})
-	err = json.Unmarshal(jsonVariables, rawVariables)
+	mjmlPassword, err := ssm.GetParameter(ctx, "/mjml/password", true)
+	if err != nil {
+		return err
+	}
+	mailHTML, err := mail.Render(ctx, templateEmailPriorityAdmin, templateEmailPriorityAdminProps{
+		Entry:       order.Trip.Checkpoint,
+		ArrivalDate: order.Trip.ArrivalDate,
+		Applicants: lo.Map(order.Applicants, func(app db.Applicant, _ int) templateEmailPriorityAdminPropsApplicant {
+			return templateEmailPriorityAdminPropsApplicant{
+				RegistrationCode: app.RegistrationCode,
+				Email:            app.Email,
+			}
+		}),
+		ProcessingTime: processingTimeText,
+		ExtraServices:  ftText,
+	}, mjmlUsername, mjmlPassword)
 	if err != nil {
 		return err
 	}
 
-	body := mailjet.InfoMessagesV31{
-		From: &mailjet.RecipientV31{
-			Email: "info@vietnam-immigrations.org",
-			Name:  "Vietnam Visa Online",
-		},
-		To: &to,
-		Cc: &mailjet.RecipientsV31{
-			mailjet.RecipientV31{
-				Email: cfg.EmailPartnerCC,
-			},
-		},
-		TemplateID:       cfg.PriorityEmailPartnerTemplateID,
-		TemplateLanguage: true,
-		Subject:          subject,
-		Variables:        *rawVariables,
-	}
+	err = ses.Send(ctx, ses.SendProps{
+		From:        mailAddressInfo,
+		To:          []string{cfg.EmailPartner},
+		ReplyTo:     mailAddressInfo,
+		CC:          []string{cfg.EmailPartnerCC},
+		BCC:         nil,
+		Subject:     subject,
+		HTML:        *mailHTML,
+		Attachments: nil,
+	})
 
-	err = mymailjet.Send(ctx, body)
 	if err != nil {
 		_ = notification.Create(ctx, notification.Notification{
 			ID:         uuid.New().String(),
