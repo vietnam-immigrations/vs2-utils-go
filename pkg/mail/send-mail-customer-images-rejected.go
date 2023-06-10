@@ -14,11 +14,6 @@ import (
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 )
 
-type SendCustomerImagesRejectedOptions struct {
-	OrderNumber string `json:"orderNumber"`
-	StatusUrl   string `json:"statusUrl"`
-}
-
 func SendCustomerImagesRejected(ctx context.Context, order *db.Order) error {
 	log := logger.FromContext(ctx)
 	log.Infof("send email to customer for order [%s]", order.Number)

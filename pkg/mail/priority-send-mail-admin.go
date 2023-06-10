@@ -16,19 +16,6 @@ import (
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/notification"
 )
 
-type SendPriorityAdminOptions struct {
-	Applicants              []SendPriorityAdminOptionsApplicant `json:"applicants"`
-	ArrivalDate             string                              `json:"arrivalDate"`
-	Entry                   string                              `json:"entry"`
-	ProcessingTimeInContent string                              `json:"processingTimeInContent"`
-	ExtraServices           string                              `json:"extraServices"`
-}
-
-type SendPriorityAdminOptionsApplicant struct {
-	RegistrationCode string `json:"registrationCode"`
-	Email            string `json:"email"`
-}
-
 func SendPriorityAdmin(ctx context.Context, order *db.Order) error {
 	log := logger.FromContext(ctx)
 	log.Infof("send priority email to partner for order [%s]", order.Number)

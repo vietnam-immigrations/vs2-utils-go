@@ -14,17 +14,6 @@ import (
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 )
 
-type SendPriorityCustomerOptionsApplicant struct {
-	Title            string `json:"title"`
-	RegistrationCode string `json:"registrationCode"`
-}
-
-type SendPriorityCustomerOptions struct {
-	FullName      string                                 `json:"fullName"`
-	Applicants    []SendPriorityCustomerOptionsApplicant `json:"applicants"`
-	ExtraServices string                                 `json:"extraServices"`
-}
-
 func SendPriorityCustomer(ctx context.Context, order *db.Order) error {
 	log := logger.FromContext(ctx)
 	log.Infof("send priority email to customer for order [%s]", order.Number)
