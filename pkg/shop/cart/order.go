@@ -3,11 +3,13 @@ package cart
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/samber/lo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
+	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/random"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/shop/db"
 )
 
@@ -19,7 +21,9 @@ func ToFinalOrder(ctx context.Context, uiOrder *db.UIOrder) *db.Order {
 	log := logger.FromContext(ctx)
 	log.Infof("Converting UI order to final order: %+v", *uiOrder)
 	finalOrder := &db.Order{
-		ID: primitive.NewObjectID(),
+		ID:        primitive.NewObjectID(),
+		CreatedAt: time.Now(),
+		Secret:    random.String(10, lo.AlphanumericCharset),
 	}
 	finalOrder.Applicants = uiOrder.Applicants
 	finalOrder.Options = uiOrder.Options

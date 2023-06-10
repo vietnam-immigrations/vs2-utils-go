@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -77,6 +78,9 @@ type Order struct {
 	ID           primitive.ObjectID `bson:"_id" json:"id"`
 	BillingItems []BillingItem      `bson:"billingItems" json:"billingItems"`
 	Summary      OrderSummary       `bson:"summary" json:"summary"`
+	Secret       string             `bson:"secret" json:"secret"`
+	CreatedAt    time.Time          `bson:"createdAt" json:"createdAt"`
+	PaidAt       *time.Time         `bson:"paidAt,omitempty" json:"paidAt,omitempty"`
 }
 
 const (
