@@ -13,7 +13,7 @@ require (
 	github.com/samber/lo v1.38.1
 	github.com/stretchr/testify v1.8.4
 	go.mongodb.org/mongo-driver v1.11.7
-	golang.org/x/text v0.9.0
+	golang.org/x/text v0.10.0
 )
 
 require (
