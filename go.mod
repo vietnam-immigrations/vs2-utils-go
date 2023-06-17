@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sns v1.20.13
 	github.com/dchest/uniuri v1.2.0
 	github.com/google/uuid v1.3.0
-	github.com/nam-truong-le/lambda-utils-go/v3 v3.7.13
+	github.com/nam-truong-le/lambda-utils-go/v3 v3.7.15
 	github.com/pusher/pusher-http-go/v5 v5.1.1
 	github.com/samber/lo v1.38.1
 	github.com/stretchr/testify v1.8.4
