@@ -11,14 +11,8 @@ import (
 
 func TestToFinalOrder(t *testing.T) {
 	applicants := []db.Applicant{{
-		PortraitFile: db.UploadFile{
-			Name:   "portrait",
-			Base64: "portrait-content",
-		},
-		PassportFile: db.UploadFile{
-			Name:   "passport",
-			Base64: "passport-content",
-		},
+		PortraitFile:   "portrait-file",
+		PassportFile:   "passport-file",
 		FirstName:      "Firstname",
 		LastName:       "Lastname",
 		DateOfBirth:    "01/01/1990",
@@ -27,14 +21,8 @@ func TestToFinalOrder(t *testing.T) {
 		PassportNumber: "DE999999",
 		PassportExpiry: "01/01/2030",
 	}, {
-		PortraitFile: db.UploadFile{
-			Name:   "portrait2",
-			Base64: "portrait2-content",
-		},
-		PassportFile: db.UploadFile{
-			Name:   "passport2",
-			Base64: "passport2-content",
-		},
+		PortraitFile:   "portrait-file-2",
+		PassportFile:   "passport-file-2",
 		FirstName:      "Firstname2",
 		LastName:       "Lastname2",
 		DateOfBirth:    "01/01/2000",

@@ -21,21 +21,16 @@ func CollectionOrder(ctx context.Context) (*mongo.Collection, error) {
 	return mongodb.Collection(ctx, database, colShopOrder)
 }
 
-type UploadFile struct {
-	Name   string `bson:"name" json:"name"`
-	Base64 string `bson:"base64" json:"base64"`
-}
-
 type Applicant struct {
-	PortraitFile   UploadFile `bson:"portraitFile" json:"portraitFile"`
-	PassportFile   UploadFile `bson:"passportFile" json:"passportFile"`
-	FirstName      string     `bson:"firstName" json:"firstName"`
-	LastName       string     `bson:"lastName" json:"lastName"`
-	DateOfBirth    string     `bson:"dateOfBirth" json:"dateOfBirth"`
-	Sex            string     `bson:"sex" json:"sex"`
-	Nationality    string     `bson:"nationality" json:"nationality"`
-	PassportNumber string     `bson:"passportNumber" json:"passportNumber"`
-	PassportExpiry string     `bson:"passportExpiry" json:"passportExpiry"`
+	PortraitFile   string `bson:"portraitFile" json:"portraitFile"`
+	PassportFile   string `bson:"passportFile" json:"passportFile"`
+	FirstName      string `bson:"firstName" json:"firstName"`
+	LastName       string `bson:"lastName" json:"lastName"`
+	DateOfBirth    string `bson:"dateOfBirth" json:"dateOfBirth"`
+	Sex            string `bson:"sex" json:"sex"`
+	Nationality    string `bson:"nationality" json:"nationality"`
+	PassportNumber string `bson:"passportNumber" json:"passportNumber"`
+	PassportExpiry string `bson:"passportExpiry" json:"passportExpiry"`
 }
 
 type CartOptions struct {
