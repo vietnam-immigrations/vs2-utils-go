@@ -21,9 +21,10 @@ func ToFinalOrder(ctx context.Context, uiOrder *db.UIOrder) *db.Order {
 	log := logger.FromContext(ctx)
 	log.Infof("Converting UI order to final order: %+v", *uiOrder)
 	finalOrder := &db.Order{
-		ID:        primitive.NewObjectID(),
-		CreatedAt: time.Now(),
-		Secret:    random.String(10, lo.AlphanumericCharset),
+		ID:          primitive.NewObjectID(),
+		OrderNumber: random.String(11, lo.NumbersCharset),
+		CreatedAt:   time.Now(),
+		Secret:      random.String(10, lo.AlphanumericCharset),
 	}
 	finalOrder.Applicants = uiOrder.Applicants
 	finalOrder.Options = uiOrder.Options
