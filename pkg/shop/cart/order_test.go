@@ -69,6 +69,7 @@ func TestToFinalOrder(t *testing.T) {
 		},
 	}, finalOrder.BillingItems)
 	assert.Equal(t, db.OrderSummary{Total: 110}, finalOrder.Summary)
+	assert.Equal(t, len(finalOrder.OrderNumber), 11)
 }
 
 func TestToFinalOrder_ProcessingTime2Days(t *testing.T) {
