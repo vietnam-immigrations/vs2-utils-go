@@ -71,6 +71,7 @@ type OrderSummary struct {
 type Order struct {
 	UIOrder
 	ID           primitive.ObjectID `bson:"_id" json:"id"`
+	OrderNumber  string             `bson:"orderNumber" json:"orderNumber"`
 	BillingItems []BillingItem      `bson:"billingItems" json:"billingItems"`
 	Summary      OrderSummary       `bson:"summary" json:"summary"`
 	Secret       string             `bson:"secret" json:"secret"`
