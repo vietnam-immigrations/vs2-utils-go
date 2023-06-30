@@ -72,6 +72,62 @@ func TestToFinalOrder(t *testing.T) {
 	assert.Equal(t, len(finalOrder.OrderNumber), 11)
 }
 
+func TestToFinalOrder_Priority(t *testing.T) {
+	priorityApplicants := []db.PriorityApplicant{{
+		Code:  "code1",
+		Email: "email1",
+	}, {
+		Code:  "code2",
+		Email: "email2",
+	}}
+	options := db.CartOptions{
+		ArrivalDate:    "01/01/2023",
+		Entry:          "Hanoi",
+		ProcessingTime: db.ProcessingTime2Days,
+		FastTrack:      db.FastTrackNo,
+		Car:            db.CarNo,
+		Flight:         "VN123",
+		Hotel:          "Hotel",
+	}
+	billing := db.CartBilling{
+		FirstName: "Firstname",
+		LastName:  "Lastname",
+		Phone:     "+4912345678",
+		Email:     "mail@mail.com",
+		Email2:    "mail2@mail.com",
+	}
+	finalOrder := ToFinalOrder(context.TODO(), &db.UIOrder{
+		Applicants:         make([]db.Applicant, 0),
+		PriorityApplicants: priorityApplicants,
+		Options:            options,
+		Billing:            billing,
+	})
+	assert.NotNil(t, finalOrder)
+	assert.NotEmpty(t, finalOrder.ID)
+	assert.NotEmpty(t, finalOrder.Secret)
+	assert.NotEmpty(t, finalOrder.CreatedAt)
+	assert.Nil(t, finalOrder.PaidAt)
+	assert.Equal(t, priorityApplicants, finalOrder.PriorityApplicants)
+	assert.Equal(t, options, finalOrder.Options)
+	assert.Equal(t, billing, finalOrder.Billing)
+	assert.Equal(t, []db.BillingItem{
+		{
+			Description: "E-Visa Priority Handling",
+			UnitPrice:   25,
+			Quantity:    2,
+			Total:       50,
+		},
+		{
+			Description: "Processing time 2 working days",
+			UnitPrice:   45,
+			Quantity:    2,
+			Total:       90,
+		},
+	}, finalOrder.BillingItems)
+	assert.Equal(t, db.OrderSummary{Total: 140}, finalOrder.Summary)
+	assert.Equal(t, len(finalOrder.OrderNumber), 11)
+}
+
 func TestToFinalOrder_ProcessingTime2Days(t *testing.T) {
 	applicants := []db.Applicant{{}, {}}
 	options := db.CartOptions{
