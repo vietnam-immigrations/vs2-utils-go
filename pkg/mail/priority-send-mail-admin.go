@@ -40,6 +40,9 @@ func SendPriorityAdmin(ctx context.Context, order *db.Order) error {
 	if order.Trip.FastTrack != "No" {
 		ft = append(ft, fmt.Sprintf("%s (flight: %s)", order.Trip.FastTrack, order.Trip.Flight))
 	}
+	if order.Trip.CarPickup {
+		ft = append(ft, fmt.Sprintf("car pick-up (hotel: %s)", order.Trip.CarPickupAddress))
+	}
 	ftText := strings.Join(ft, ", ")
 
 	mjmlUsername, err := ssm.GetParameter(ctx, "/mjml/username", false)
