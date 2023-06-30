@@ -76,13 +76,14 @@ type OrderSummary struct {
 
 type Order struct {
 	UIOrder
-	ID           primitive.ObjectID `bson:"_id" json:"id"`
-	OrderNumber  string             `bson:"orderNumber" json:"orderNumber"`
-	BillingItems []BillingItem      `bson:"billingItems" json:"billingItems"`
-	Summary      OrderSummary       `bson:"summary" json:"summary"`
-	Secret       string             `bson:"secret" json:"secret"`
-	CreatedAt    time.Time          `bson:"createdAt" json:"createdAt"`
-	PaidAt       *time.Time         `bson:"paidAt,omitempty" json:"paidAt,omitempty"`
+	ID               primitive.ObjectID `bson:"_id" json:"id"`
+	OrderNumber      string             `bson:"orderNumber" json:"orderNumber"`
+	BillingItems     []BillingItem      `bson:"billingItems" json:"billingItems"`
+	Summary          OrderSummary       `bson:"summary" json:"summary"`
+	Secret           string             `bson:"secret" json:"secret"`
+	CreatedAt        time.Time          `bson:"createdAt" json:"createdAt"`
+	PaymentCreatedAt *time.Time         `bson:"paymentCreatedAt,omitempty" json:"paymentCreatedAt,omitempty"`
+	PaidAt           *time.Time         `bson:"paidAt,omitempty" json:"paidAt,omitempty"`
 }
 
 const (
