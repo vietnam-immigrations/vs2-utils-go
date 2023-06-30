@@ -14,7 +14,8 @@ import (
 )
 
 const (
-	evisaPrice = 55
+	evisaPrice    = 55
+	priorityPrice = 25
 )
 
 func ToFinalOrder(ctx context.Context, uiOrder *db.UIOrder) *db.Order {
@@ -27,24 +28,36 @@ func ToFinalOrder(ctx context.Context, uiOrder *db.UIOrder) *db.Order {
 		Secret:      random.String(10, lo.AlphanumericCharset),
 	}
 	finalOrder.Applicants = uiOrder.Applicants
+	finalOrder.PriorityApplicants = uiOrder.PriorityApplicants
 	finalOrder.Options = uiOrder.Options
 	finalOrder.Billing = uiOrder.Billing
-	numberOfApplicants := len(uiOrder.Applicants)
-	finalOrder.BillingItems = []db.BillingItem{
-		{
+	finalOrder.BillingItems = make([]db.BillingItem, 0)
+	noNormalApplicants := len(uiOrder.Applicants)
+	if noNormalApplicants > 0 {
+		finalOrder.BillingItems = append(finalOrder.BillingItems, db.BillingItem{
 			Description: "E-Visa",
 			UnitPrice:   evisaPrice,
-			Quantity:    numberOfApplicants,
-			Total:       evisaPrice * numberOfApplicants,
-		},
+			Quantity:    noNormalApplicants,
+			Total:       evisaPrice * noNormalApplicants,
+		})
 	}
+	noPriorityApplicants := len(uiOrder.PriorityApplicants)
+	if noPriorityApplicants > 0 {
+		finalOrder.BillingItems = append(finalOrder.BillingItems, db.BillingItem{
+			Description: "E-Visa Priority Handling",
+			UnitPrice:   priorityPrice,
+			Quantity:    noPriorityApplicants,
+			Total:       priorityPrice * noPriorityApplicants,
+		})
+	}
+	noApplicants := noNormalApplicants + noPriorityApplicants
 	if processingTime, ok := db.ProcessingTimePrice[uiOrder.Options.ProcessingTime]; ok {
 		log.Infof("Adding processing time price: %+v", uiOrder.Options.ProcessingTime)
 		finalOrder.BillingItems = append(finalOrder.BillingItems, db.BillingItem{
 			Description: fmt.Sprintf("Processing time %s", uiOrder.Options.ProcessingTime),
 			UnitPrice:   processingTime,
-			Quantity:    numberOfApplicants,
-			Total:       processingTime * numberOfApplicants,
+			Quantity:    noApplicants,
+			Total:       processingTime * noApplicants,
 		})
 	}
 	if fastTrack, ok := db.FastTrackPrice[uiOrder.Options.FastTrack]; ok {
@@ -52,8 +65,8 @@ func ToFinalOrder(ctx context.Context, uiOrder *db.UIOrder) *db.Order {
 		finalOrder.BillingItems = append(finalOrder.BillingItems, db.BillingItem{
 			Description: uiOrder.Options.FastTrack,
 			UnitPrice:   fastTrack,
-			Quantity:    numberOfApplicants,
-			Total:       fastTrack * numberOfApplicants,
+			Quantity:    noApplicants,
+			Total:       fastTrack * noApplicants,
 		})
 	}
 	if car, ok := db.CarPrice[uiOrder.Options.Car]; ok {
