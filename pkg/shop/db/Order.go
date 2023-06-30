@@ -33,6 +33,11 @@ type Applicant struct {
 	PassportExpiry string `bson:"passportExpiry" json:"passportExpiry"`
 }
 
+type PriorityApplicant struct {
+	Code  string `bson:"code" json:"code"`
+	Email string `bson:"email" json:"email"`
+}
+
 type CartOptions struct {
 	ArrivalDate    string `bson:"arrivalDate" json:"arrivalDate"`
 	Entry          string `bson:"entry" json:"entry"`
@@ -52,9 +57,10 @@ type CartBilling struct {
 }
 
 type UIOrder struct {
-	Applicants []Applicant `bson:"applicants" json:"applicants"`
-	Options    CartOptions `bson:"options" json:"options"`
-	Billing    CartBilling `bson:"billing" json:"billing"`
+	Applicants         []Applicant         `bson:"applicants" json:"applicants"`
+	PriorityApplicants []PriorityApplicant `bson:"priorityApplicants" json:"priorityApplicants"`
+	Options            CartOptions         `bson:"options" json:"options"`
+	Billing            CartBilling         `bson:"billing" json:"billing"`
 }
 
 type BillingItem struct {
