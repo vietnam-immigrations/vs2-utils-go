@@ -8,8 +8,8 @@ import (
 	"github.com/samber/lo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/random"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/logger"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/random"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/shop/db"
 )
 

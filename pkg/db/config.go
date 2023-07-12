@@ -8,15 +8,15 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ssm"
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/mongodb"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/aws/secretsmanager"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/logger"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/mongodb"
 )
 
 const colConfigName = "config"
 
 func CollectionConfig(ctx context.Context) (*mongo.Collection, error) {
-	database, err := ssm.GetParameter(ctx, "/mongo/db", false)
+	database, err := secretsmanager.GetParameter(ctx, "/mongo/db")
 	if err != nil {
 		return nil, err
 	}

@@ -8,10 +8,10 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/lo"
 
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ses"
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ssm"
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/mail"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/aws/secretsmanager"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/aws/ses"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/logger"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/mail"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/notification"
 )
@@ -45,11 +45,11 @@ func SendPriorityAdmin(ctx context.Context, order *db.Order) error {
 	}
 	ftText := strings.Join(ft, ", ")
 
-	mjmlUsername, err := ssm.GetParameter(ctx, "/mjml/username", false)
+	mjmlUsername, err := secretsmanager.GetParameter(ctx, "/mjml/username")
 	if err != nil {
 		return err
 	}
-	mjmlPassword, err := ssm.GetParameter(ctx, "/mjml/password", true)
+	mjmlPassword, err := secretsmanager.GetParameter(ctx, "/mjml/password")
 	if err != nil {
 		return err
 	}
