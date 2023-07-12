@@ -8,12 +8,12 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/lo"
 
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/s3"
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ses"
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ssm"
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/mail"
-	vs2ssm "github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/aws/ssm"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/aws/s3"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/aws/secretsmanager"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/aws/ses"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/logger"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/mail"
+	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/amplify"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/notification"
 )
@@ -48,11 +48,11 @@ func SendAdmin(ctx context.Context, order *db.Order) error {
 	}
 	ftText := strings.Join(ft, ", ")
 
-	mjmlUsername, err := ssm.GetParameter(ctx, "/mjml/username", false)
+	mjmlUsername, err := secretsmanager.GetParameter(ctx, "/mjml/username")
 	if err != nil {
 		return err
 	}
-	mjmlPassword, err := ssm.GetParameter(ctx, "/mjml/password", true)
+	mjmlPassword, err := secretsmanager.GetParameter(ctx, "/mjml/password")
 	if err != nil {
 		return err
 	}
@@ -81,12 +81,12 @@ func SendAdmin(ctx context.Context, order *db.Order) error {
 		Subject: subject,
 		HTML:    *mailHTML,
 		Attachments: lo.FlatMap(order.Applicants, func(app db.Applicant, _ int) []ses.SendPropsAttachment {
-			portraitAtt, err := s3.ReadFileBucketSSM(ctx, vs2ssm.S3BucketAttachment, app.AttachmentPortrait.S3Key)
+			portraitAtt, err := s3.ReadFileBucketSSM(ctx, amplify.S3Attachment, app.AttachmentPortrait.S3Key)
 			if err != nil {
 				log.Errorf("Failed to load portrait file [%s]: %s", app.AttachmentPortrait.S3Key, err)
 				return nil
 			}
-			passportAtt, err := s3.ReadFileBucketSSM(ctx, vs2ssm.S3BucketAttachment, app.AttachmentPassport.S3Key)
+			passportAtt, err := s3.ReadFileBucketSSM(ctx, amplify.S3Attachment, app.AttachmentPassport.S3Key)
 			if err != nil {
 				log.Errorf("Failed to load passport file [%s]: %s", app.AttachmentPassport.S3Key, err)
 			}

@@ -9,23 +9,18 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/sns/types"
 	"github.com/google/uuid"
 
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/sns"
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ssm"
-	mycontext "github.com/nam-truong-le/lambda-utils-go/v3/pkg/context"
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
-)
-
-const (
-	ssmOrderImportedSNS      = "/sns/orderImported/arn"
-	ssmOrderValidatedSNS     = "/sns/orderValidated/arn"
-	ssmAttachmentRejectedSNS = "/sns/attachmentRejected/arn"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/aws/sns"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/aws/ssm"
+	mycontext "github.com/nam-truong-le/lambda-utils-go/v4/pkg/context"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/logger"
+	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/amplify"
 )
 
 func OrderImported(ctx context.Context, id string) error {
 	log := logger.FromContext(ctx)
 	log.Infof("Send SNS order imported for order [%s]", id)
 
-	snsARN, err := ssm.GetParameter(ctx, ssmOrderImportedSNS, false)
+	snsARN, err := ssm.GetParameter(ctx, amplify.SNSOrderImported, false)
 	if err != nil {
 		return err
 	}
@@ -64,7 +59,7 @@ func OrderValidated(ctx context.Context, id string) error {
 	log := logger.FromContext(ctx)
 	log.Infof("Send SNS order validated for order [%s]", id)
 
-	snsARN, err := ssm.GetParameter(ctx, ssmOrderValidatedSNS, false)
+	snsARN, err := ssm.GetParameter(ctx, amplify.SNSOrderValidated, false)
 	if err != nil {
 		return err
 	}
@@ -103,7 +98,7 @@ func AttachmentRejected(ctx context.Context, id string) error {
 	log := logger.FromContext(ctx)
 	log.Infof("Send SNS attachment rejected [%s]", id)
 
-	snsARN, err := ssm.GetParameter(ctx, ssmAttachmentRejectedSNS, false)
+	snsARN, err := ssm.GetParameter(ctx, amplify.SNSAttachmentRejected, false)
 	if err != nil {
 		return err
 	}

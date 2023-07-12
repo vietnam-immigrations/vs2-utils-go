@@ -13,13 +13,12 @@ import (
 	"github.com/google/uuid"
 	"github.com/samber/lo"
 
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/random"
-	vs2ssm "github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/aws/ssm"
-
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/s3"
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ssm"
-	mycontext "github.com/nam-truong-le/lambda-utils-go/v3/pkg/context"
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/aws/s3"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/aws/secretsmanager"
+	mycontext "github.com/nam-truong-le/lambda-utils-go/v4/pkg/context"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/logger"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/random"
+	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/amplify"
 )
 
 type pdfConvertRequest struct {
@@ -39,12 +38,12 @@ func pdfToJPG(ctx context.Context, fileContent []byte, fileName string) ([]byte,
 	log.Infof("Convert PDF file [%s] to JPG", fileName)
 
 	tempKey := fmt.Sprintf("%s/%s_%s", time.Now().Format("2006/01/02"), random.String(5, lo.AlphanumericCharset), fileName)
-	err := s3.WriteFileBucketSSM(ctx, vs2ssm.S3BucketTemp, tempKey, fileContent)
+	err := s3.WriteFileBucketSSM(ctx, amplify.S3Temp, tempKey, fileContent)
 	if err != nil {
 		log.Errorf("Failed to create temp file [%s]", tempKey)
 		return nil, nil, err
 	}
-	tempFileURL, err := s3.PublicURLSSMBucket(ctx, vs2ssm.S3BucketTemp, tempKey)
+	tempFileURL, err := s3.PublicURLSSMBucket(ctx, amplify.S3Temp, tempKey)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -59,11 +58,11 @@ func pdfToJPG(ctx context.Context, fileContent []byte, fileName string) ([]byte,
 		return nil, nil, err
 	}
 
-	toolsURL, err := ssm.GetParameter(ctx, "/external/tools/url", false)
+	toolsURL, err := secretsmanager.GetParameter(ctx, "/external/tools/url")
 	if err != nil {
 		return nil, nil, err
 	}
-	toolsAPIKey, err := ssm.GetParameter(ctx, "/external/tools/apikey", true)
+	toolsAPIKey, err := secretsmanager.GetParameter(ctx, "/external/tools/apikey")
 	if err != nil {
 		return nil, nil, err
 	}

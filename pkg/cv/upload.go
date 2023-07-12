@@ -13,10 +13,11 @@ import (
 	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/sns"
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/aws/ssm"
-	mycontext "github.com/nam-truong-le/lambda-utils-go/v3/pkg/context"
-	"github.com/nam-truong-le/lambda-utils-go/v3/pkg/logger"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/aws/sns"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/aws/ssm"
+	mycontext "github.com/nam-truong-le/lambda-utils-go/v4/pkg/context"
+	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/logger"
+	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/amplify"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 )
 
@@ -28,7 +29,7 @@ func UploadToS3AndSendSNS(ctx context.Context, fileNames []string, fileContents 
 		return fmt.Errorf("missing stage in context")
 	}
 
-	s3Bucket, err := ssm.GetParameter(ctx, "/result/s3BucketName", false)
+	s3Bucket, err := ssm.GetParameter(ctx, amplify.S3Result, false)
 	if err != nil {
 		log.Errorf("failed to get s3 location: %s", err)
 		return err
@@ -75,7 +76,7 @@ func UploadToS3AndSendSNS(ctx context.Context, fileNames []string, fileContents 
 		log.Errorf("failed to create SNS client: %s", err)
 		return err
 	}
-	newResultTopic, err := ssm.GetParameter(ctx, "/sns/newResult/arn", false)
+	newResultTopic, err := ssm.GetParameter(ctx, amplify.SNSNewResult, false)
 	if err != nil {
 		log.Errorf("failed to get SNS topic arn: %s", err)
 	}
