@@ -5,7 +5,6 @@ const (
 	SNSOrderValidated     = "/sns/orderValidated/arn"
 	SNSAttachmentRejected = "/sns/attachmentRejected/arn"
 	SNSNewResult          = "/sns/newResult/arn"
-	SNSNewOrder           = "/sns/newOrder/arn"
 	SNSResultFound        = "/sns/resultFound/arn"
 
 	S3Result     = "/result/s3BucketName"
