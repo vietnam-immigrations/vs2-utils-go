@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sns v1.21.1
 	github.com/dchest/uniuri v1.2.0
 	github.com/google/uuid v1.3.0
-	github.com/nam-truong-le/lambda-utils-go/v4 v4.1.21
+	github.com/nam-truong-le/lambda-utils-go/v4 v4.1.25
 	github.com/pusher/pusher-http-go/v5 v5.1.1
 	github.com/samber/lo v1.38.1
 	github.com/stretchr/testify v1.8.4
@@ -19,8 +19,8 @@ require (
 require (
 	github.com/aws/aws-lambda-go v1.41.0 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.4.11 // indirect
-	github.com/aws/aws-sdk-go-v2/config v1.18.31 // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.13.30 // indirect
+	github.com/aws/aws-sdk-go-v2/config v1.18.32 // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.13.31 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.13.7 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.37 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.31 // indirect
@@ -30,12 +30,12 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.32 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.31 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.15.0 // indirect
-	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.19.12 // indirect
+	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.20.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ses v1.15.13 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.36.9 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sso v1.13.0 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.15.0 // indirect
-	github.com/aws/aws-sdk-go-v2/service/sts v1.21.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sso v1.13.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.15.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/sts v1.21.1 // indirect
 	github.com/aws/smithy-go v1.14.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
