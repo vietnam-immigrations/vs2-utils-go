@@ -8,11 +8,11 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sns v1.21.1
 	github.com/dchest/uniuri v1.2.0
 	github.com/google/uuid v1.3.0
-	github.com/nam-truong-le/lambda-utils-go/v4 v4.1.32
+	github.com/nam-truong-le/lambda-utils-go/v4 v4.1.34
 	github.com/pusher/pusher-http-go/v5 v5.1.1
 	github.com/samber/lo v1.38.1
 	github.com/stretchr/testify v1.8.4
-	go.mongodb.org/mongo-driver v1.12.0
+	go.mongodb.org/mongo-driver v1.12.1
 	golang.org/x/text v0.11.0
 )
 
