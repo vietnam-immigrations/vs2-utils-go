@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sns v1.21.2
 	github.com/dchest/uniuri v1.2.0
 	github.com/google/uuid v1.3.0
-	github.com/nam-truong-le/lambda-utils-go/v4 v4.1.43
+	github.com/nam-truong-le/lambda-utils-go/v4 v4.1.44
 	github.com/pusher/pusher-http-go/v5 v5.1.1
 	github.com/samber/lo v1.38.1
 	github.com/stretchr/testify v1.8.4
@@ -31,7 +31,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.32 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.15.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.21.0 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ses v1.16.2 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ses v1.16.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.37.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.13.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.15.2 // indirect
