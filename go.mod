@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.20.2
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.38.2
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.38.3
 	github.com/aws/aws-sdk-go-v2/service/sns v1.21.2
 	github.com/dchest/uniuri v1.2.0
 	github.com/google/uuid v1.3.0
@@ -22,14 +22,14 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.18.33 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.13.32 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.13.8 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.38 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.32 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/configsources v1.1.39 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.4.33 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/ini v1.3.39 // indirect
-	github.com/aws/aws-sdk-go-v2/internal/v4a v1.1.1 // indirect
+	github.com/aws/aws-sdk-go-v2/internal/v4a v1.1.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.9.13 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.33 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.32 // indirect
-	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.15.1 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/checksum v1.1.34 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.33 // indirect
+	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.15.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.21.0 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ses v1.16.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssm v1.37.2 // indirect
