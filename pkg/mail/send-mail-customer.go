@@ -43,6 +43,8 @@ func SendCustomer(ctx context.Context, order *db.Order) error {
 	}
 	mailHTML, err := mail.Render(ctx, templateEmailCustomer, templateEmailCustomerProps{
 		OrderNumber:      order.Number,
+		VisaType:         order.Trip.VisaType,
+		VisitPurpose:     order.Trip.VisitPurpose,
 		ArrivalDate:      order.Trip.ArrivalDate,
 		Entry:            order.Trip.Checkpoint,
 		Flight:           order.Trip.Flight,
@@ -56,11 +58,16 @@ func SendCustomer(ctx context.Context, order *db.Order) error {
 		Applicants: lo.Map(order.Applicants, func(app db.Applicant, _ int) templateEmailCustomerPropsApplicant {
 			return templateEmailCustomerPropsApplicant{
 				Name:               fmt.Sprintf("%s, %s", app.LastName, app.FirstName),
+				Gender:             app.Sex,
 				Nationality:        app.Nationality,
 				Passport:           app.PassportNumber,
 				Birthday:           app.DateOfBirth,
 				PassportValidUntil: app.PassportExpiry,
-				Gender:             app.Sex,
+				HomeAddress:        app.AddressHome,
+				HomeContact:        app.PhoneNumberHome,
+				VietnamAddress:     app.AddressVietnam,
+				PreviousVisitCount: app.PreviousVisitCount,
+				LawViolation:       app.LawViolation,
 			}
 		}),
 		TrackingURL: fmt.Sprintf("https://%s/#/?order=%s&secret=%s", cfg.CustomerDomain, order.Number, order.OrderKey),

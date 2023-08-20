@@ -57,12 +57,19 @@ func SendAdmin(ctx context.Context, order *db.Order) error {
 		return err
 	}
 	mailHTML, err := mail.Render(ctx, templateEmailAdmin, templateEmailAdminProps{
-		Entry:       order.Trip.Checkpoint,
-		ArrivalDate: order.Trip.ArrivalDate,
+		VisaType:     order.Trip.VisaType,
+		VisitPurpose: order.Trip.VisitPurpose,
+		Entry:        order.Trip.Checkpoint,
+		ArrivalDate:  order.Trip.ArrivalDate,
 		Applicants: lo.Map(order.Applicants, func(app db.Applicant, _ int) templateEmailAdminPropsApplicant {
 			return templateEmailAdminPropsApplicant{
-				LastName:  app.LastName,
-				FirstName: app.FirstName,
+				LastName:           app.LastName,
+				FirstName:          app.FirstName,
+				AddressHome:        app.AddressHome,
+				ContactHome:        app.PhoneNumberHome,
+				AddressVietnam:     app.AddressVietnam,
+				PreviousVisitCount: app.PreviousVisitCount,
+				LawViolation:       app.LawViolation,
 			}
 		}),
 		ProcessingTime: processingTimeInContent,

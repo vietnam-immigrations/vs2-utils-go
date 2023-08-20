@@ -11,6 +11,8 @@ type templateEmailPriorityAdminProps struct {
 	Applicants     []templateEmailPriorityAdminPropsApplicant
 	ProcessingTime string
 	ExtraServices  string
+	VisaType       string
+	VisitPurpose   string
 }
 
 const templateEmailPriorityAdmin = `<mjml>
@@ -20,6 +22,8 @@ const templateEmailPriorityAdmin = `<mjml>
             <mj-column>
                 <mj-text font-size="14px" line-height="20px">
                     {{.Entry}} on {{.ArrivalDate}} <br/>
+                    {{.VisaType}} - {{.VisitPurpose}}<br/><br/><br/>
+
                     {{range .Applicants}}
                         {{.RegistrationCode}} | {{.Email}} <br/>
                     {{end}}

@@ -7,10 +7,17 @@ type templateEmailCustomerPropsApplicant struct {
 	Passport           string
 	Birthday           string
 	PassportValidUntil string
+	HomeAddress        string
+	HomeContact        string
+	VietnamAddress     string
+	PreviousVisitCount string
+	LawViolation       string
 }
 
 type templateEmailCustomerProps struct {
 	OrderNumber      string
+	VisaType         string
+	VisitPurpose     string
 	ArrivalDate      string
 	Entry            string
 	Flight           string
@@ -70,11 +77,11 @@ const templateEmailCustomer = `<mjml>
                     </tr>
                     <tr>
                         <th>Visa type</th>
-                        <td>1 month single entry</td>
+                        <td>{{.VisaType}}</td>
                     </tr>
                     <tr>
                         <th>Visit purpose</th>
-                        <td>Tourism</td>
+                        <td>{{.VisitPurpose}}</td>
                     </tr>
                     <tr>
                         <th>Entry</th>
@@ -133,6 +140,17 @@ const templateEmailCustomer = `<mjml>
                     <tr>
                         <th>Birthday</th><td>{{.Birthday}}</td>
                         <th>Valid until</th><td>{{.PassportValidUntil}}</td>
+                    </tr>
+                    <tr>
+                        <th>Home address</th><td>{{.HomeAddress}}</td>
+                        <th>Contact</th><td>{{.HomeContact}}</td>
+                    </tr>
+                    <tr>
+                        <th>Address in Vietnam</th><td>{{.VietnamAddress}}</td>
+                        <th>Previous visits</th><td>{{.PreviousVisitCount}}</td>
+                    </tr>
+                    <tr>
+                        <th>Law violation</th><td>{{.LawViolation}}</td>
                     </tr>
                 </mj-table>
                 {{end}}
