@@ -13,11 +13,6 @@ import (
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/shop/db"
 )
 
-const (
-	evisaPrice    = 55
-	priorityPrice = 25
-)
-
 func ToFinalOrder(ctx context.Context, uiOrder *db.UIOrder) *db.Order {
 	log := logger.FromContext(ctx)
 	log.Infof("Converting UI order to final order: %+v", *uiOrder)
@@ -32,35 +27,38 @@ func ToFinalOrder(ctx context.Context, uiOrder *db.UIOrder) *db.Order {
 	finalOrder.Options = uiOrder.Options
 	finalOrder.Billing = uiOrder.Billing
 	finalOrder.BillingItems = make([]db.BillingItem, 0)
+
 	noNormalApplicants := len(uiOrder.Applicants)
-	if noNormalApplicants > 0 {
-		finalOrder.BillingItems = append(finalOrder.BillingItems, db.BillingItem{
-			Description: "E-Visa",
-			UnitPrice:   evisaPrice,
-			Quantity:    noNormalApplicants,
-			Total:       evisaPrice * noNormalApplicants,
-		})
-	}
 	noPriorityApplicants := len(uiOrder.PriorityApplicants)
-	if noPriorityApplicants > 0 {
-		finalOrder.BillingItems = append(finalOrder.BillingItems, db.BillingItem{
-			Description: "E-Visa Priority Handling",
-			UnitPrice:   priorityPrice,
-			Quantity:    noPriorityApplicants,
-			Total:       priorityPrice * noPriorityApplicants,
-		})
-	}
 	noApplicants := noNormalApplicants + noPriorityApplicants
-	if processingTime, ok := db.ProcessingTimePrice[uiOrder.Options.ProcessingTime]; ok {
-		log.Infof("Adding processing time price: %+v", uiOrder.Options.ProcessingTime)
-		finalOrder.BillingItems = append(finalOrder.BillingItems, db.BillingItem{
-			Description: fmt.Sprintf("Processing time %s", uiOrder.Options.ProcessingTime),
-			UnitPrice:   processingTime,
-			Quantity:    noApplicants,
-			Total:       processingTime * noApplicants,
-		})
+
+	var billingVisaItem db.BillingItem
+	if noPriorityApplicants > 0 {
+		billingVisaItem = db.BillingItem{
+			Description: fmt.Sprintf("[Priority] E-Visa %s", uiOrder.Options.VisaType),
+			UnitPrice:   VisaPricePriority[uiOrder.Options.VisaType],
+			Quantity:    noPriorityApplicants,
+			Total:       VisaPricePriority[uiOrder.Options.VisaType] * noPriorityApplicants,
+		}
 	}
-	if fastTrack, ok := db.FastTrackPrice[uiOrder.Options.FastTrack]; ok {
+	if noNormalApplicants > 0 {
+		billingVisaItem = db.BillingItem{
+			Description: fmt.Sprintf("E-Visa %s", uiOrder.Options.VisaType),
+			UnitPrice:   VisaPriceStandard[uiOrder.Options.VisaType],
+			Quantity:    noNormalApplicants,
+			Total:       VisaPriceStandard[uiOrder.Options.VisaType] * noNormalApplicants,
+		}
+	}
+
+	if processingTime, ok := ProcessingTimePrice[uiOrder.Options.VisaType][uiOrder.Options.ProcessingTime]; ok {
+		log.Infof("Adding processing time price: %+v", uiOrder.Options.ProcessingTime)
+		billingVisaItem.Description = fmt.Sprintf("%s - %s", billingVisaItem.Description, uiOrder.Options.ProcessingTime)
+		billingVisaItem.UnitPrice = processingTime + billingVisaItem.UnitPrice
+		billingVisaItem.Total = noApplicants * billingVisaItem.UnitPrice
+	}
+	finalOrder.BillingItems = append(finalOrder.BillingItems, billingVisaItem)
+
+	if fastTrack, ok := FastTrackPrice[uiOrder.Options.FastTrack]; ok {
 		log.Infof("Adding fast track price: %+v", uiOrder.Options.FastTrack)
 		finalOrder.BillingItems = append(finalOrder.BillingItems, db.BillingItem{
 			Description: uiOrder.Options.FastTrack,
@@ -69,7 +67,7 @@ func ToFinalOrder(ctx context.Context, uiOrder *db.UIOrder) *db.Order {
 			Total:       fastTrack * noApplicants,
 		})
 	}
-	if car, ok := db.CarPrice[uiOrder.Options.Car]; ok {
+	if car, ok := CarPrice[uiOrder.Options.Car]; ok {
 		log.Infof("Adding car price: %+v", uiOrder.Options.Car)
 		finalOrder.BillingItems = append(finalOrder.BillingItems, db.BillingItem{
 			Description: "Car pickup",
