@@ -64,6 +64,8 @@ func SendPriorityAdmin(ctx context.Context, order *db.Order) error {
 		}),
 		ProcessingTime: processingTimeText,
 		ExtraServices:  ftText,
+		VisaType:       order.Trip.VisaType,
+		VisitPurpose:   order.Trip.VisitPurpose,
 	}, mjmlUsername, mjmlPassword)
 	if err != nil {
 		return err
