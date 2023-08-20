@@ -22,15 +22,20 @@ func CollectionOrder(ctx context.Context) (*mongo.Collection, error) {
 }
 
 type Applicant struct {
-	PortraitFile   string `bson:"portraitFile" json:"portraitFile"`
-	PassportFile   string `bson:"passportFile" json:"passportFile"`
-	FirstName      string `bson:"firstName" json:"firstName"`
-	LastName       string `bson:"lastName" json:"lastName"`
-	DateOfBirth    string `bson:"dateOfBirth" json:"dateOfBirth"`
-	Sex            string `bson:"sex" json:"sex"`
-	Nationality    string `bson:"nationality" json:"nationality"`
-	PassportNumber string `bson:"passportNumber" json:"passportNumber"`
-	PassportExpiry string `bson:"passportExpiry" json:"passportExpiry"`
+	PortraitFile       string `bson:"portraitFile" json:"portraitFile"`
+	PassportFile       string `bson:"passportFile" json:"passportFile"`
+	FirstName          string `bson:"firstName" json:"firstName"`
+	LastName           string `bson:"lastName" json:"lastName"`
+	DateOfBirth        string `bson:"dateOfBirth" json:"dateOfBirth"`
+	Sex                string `bson:"sex" json:"sex"`
+	Nationality        string `bson:"nationality" json:"nationality"`
+	PassportNumber     string `bson:"passportNumber" json:"passportNumber"`
+	PassportExpiry     string `bson:"passportExpiry" json:"passportExpiry"`
+	AddressHome        string `bson:"addressHome" json:"addressHome"`
+	PhoneNumberHome    string `bson:"phoneNumberHome" json:"phoneNumberHome"`
+	AddressVietnam     string `bson:"addressVietnam" json:"addressVietnam"`
+	PreviousVisitCount string `bson:"previousVisitCount" json:"previousVisitCount"`
+	LawViolation       string `bson:"lawViolation" json:"lawViolation"`
 }
 
 type PriorityApplicant struct {
@@ -39,6 +44,8 @@ type PriorityApplicant struct {
 }
 
 type CartOptions struct {
+	VisaType       string `bson:"visaType" json:"visaType"`
+	VisitPurpose   string `bson:"visitPurpose" json:"visitPurpose"`
 	ArrivalDate    string `bson:"arrivalDate" json:"arrivalDate"`
 	Entry          string `bson:"entry" json:"entry"`
 	ProcessingTime string `bson:"processingTime" json:"processingTime"`
@@ -94,12 +101,12 @@ const (
 	ProcessingTimeUrgent  = "Urgent"
 )
 
-var ProcessingTimePrice = map[string]int{
-	ProcessingTime2Days:   45,
-	ProcessingTime1Days:   60,
-	ProcessingTimeSameDay: 70,
-	ProcessingTimeUrgent:  90,
-}
+const (
+	VisaType1MonthSingle   = "1 month single entry"
+	VisaType1MonthMultiple = "1 month multiple entry"
+	VisaType3MonthSingle   = "3 months single entry"
+	VisaType3MonthMultiple = "3 months multiple entry"
+)
 
 const (
 	FastTrackNo     = "No"
@@ -107,16 +114,7 @@ const (
 	FastTrackVIP    = "VIP fast-track"
 )
 
-var FastTrackPrice = map[string]int{
-	FastTrackNormal: 65,
-	FastTrackVIP:    95,
-}
-
 const (
 	CarNo  = "No"
 	CarYes = "Yes"
 )
-
-var CarPrice = map[string]int{
-	CarYes: 35,
-}

@@ -32,6 +32,7 @@ func TestToFinalOrder(t *testing.T) {
 		PassportExpiry: "01/01/2040",
 	}}
 	options := db.CartOptions{
+		VisaType:       db.VisaType1MonthSingle,
 		ArrivalDate:    "01/01/2023",
 		Entry:          "Hanoi",
 		ProcessingTime: db.ProcessingTimeNormal,
@@ -62,13 +63,77 @@ func TestToFinalOrder(t *testing.T) {
 	assert.Equal(t, billing, finalOrder.Billing)
 	assert.Equal(t, []db.BillingItem{
 		{
-			Description: "E-Visa",
+			Description: "E-Visa 1 month single entry",
 			UnitPrice:   55,
 			Quantity:    2,
 			Total:       110,
 		},
 	}, finalOrder.BillingItems)
 	assert.Equal(t, db.OrderSummary{Total: 110}, finalOrder.Summary)
+	assert.Equal(t, len(finalOrder.OrderNumber), 11)
+}
+
+func TestToFinalOrder_3Month(t *testing.T) {
+	applicants := []db.Applicant{{
+		PortraitFile:   "portrait-file",
+		PassportFile:   "passport-file",
+		FirstName:      "Firstname",
+		LastName:       "Lastname",
+		DateOfBirth:    "01/01/1990",
+		Sex:            "female",
+		Nationality:    "Germany",
+		PassportNumber: "DE999999",
+		PassportExpiry: "01/01/2030",
+	}, {
+		PortraitFile:   "portrait-file-2",
+		PassportFile:   "passport-file-2",
+		FirstName:      "Firstname2",
+		LastName:       "Lastname2",
+		DateOfBirth:    "01/01/2000",
+		Sex:            "male",
+		Nationality:    "USA",
+		PassportNumber: "US1234567",
+		PassportExpiry: "01/01/2040",
+	}}
+	options := db.CartOptions{
+		VisaType:       db.VisaType3MonthSingle,
+		ArrivalDate:    "01/01/2023",
+		Entry:          "Hanoi",
+		ProcessingTime: db.ProcessingTimeNormal,
+		FastTrack:      db.FastTrackNo,
+		Car:            db.CarNo,
+		Flight:         "VN123",
+		Hotel:          "Hotel",
+	}
+	billing := db.CartBilling{
+		FirstName: "Firstname",
+		LastName:  "Lastname",
+		Phone:     "+4912345678",
+		Email:     "mail@mail.com",
+		Email2:    "mail2@mail.com",
+	}
+	finalOrder := ToFinalOrder(context.TODO(), &db.UIOrder{
+		Applicants: applicants,
+		Options:    options,
+		Billing:    billing,
+	})
+	assert.NotNil(t, finalOrder)
+	assert.NotEmpty(t, finalOrder.ID)
+	assert.NotEmpty(t, finalOrder.Secret)
+	assert.NotEmpty(t, finalOrder.CreatedAt)
+	assert.Nil(t, finalOrder.PaidAt)
+	assert.Equal(t, applicants, finalOrder.Applicants)
+	assert.Equal(t, options, finalOrder.Options)
+	assert.Equal(t, billing, finalOrder.Billing)
+	assert.Equal(t, []db.BillingItem{
+		{
+			Description: "E-Visa 3 months single entry",
+			UnitPrice:   116,
+			Quantity:    2,
+			Total:       232,
+		},
+	}, finalOrder.BillingItems)
+	assert.Equal(t, db.OrderSummary{Total: 232}, finalOrder.Summary)
 	assert.Equal(t, len(finalOrder.OrderNumber), 11)
 }
 
@@ -81,6 +146,7 @@ func TestToFinalOrder_Priority(t *testing.T) {
 		Email: "email2",
 	}}
 	options := db.CartOptions{
+		VisaType:       db.VisaType1MonthSingle,
 		ArrivalDate:    "01/01/2023",
 		Entry:          "Hanoi",
 		ProcessingTime: db.ProcessingTime2Days,
@@ -112,25 +178,20 @@ func TestToFinalOrder_Priority(t *testing.T) {
 	assert.Equal(t, billing, finalOrder.Billing)
 	assert.Equal(t, []db.BillingItem{
 		{
-			Description: "E-Visa Priority Handling",
-			UnitPrice:   25,
+			Description: "[Priority] E-Visa 1 month single entry - 2 working days",
+			UnitPrice:   75,
 			Quantity:    2,
-			Total:       50,
-		},
-		{
-			Description: "Processing time 2 working days",
-			UnitPrice:   45,
-			Quantity:    2,
-			Total:       90,
+			Total:       150,
 		},
 	}, finalOrder.BillingItems)
-	assert.Equal(t, db.OrderSummary{Total: 140}, finalOrder.Summary)
+	assert.Equal(t, db.OrderSummary{Total: 150}, finalOrder.Summary)
 	assert.Equal(t, len(finalOrder.OrderNumber), 11)
 }
 
 func TestToFinalOrder_ProcessingTime2Days(t *testing.T) {
 	applicants := []db.Applicant{{}, {}}
 	options := db.CartOptions{
+		VisaType:       db.VisaType1MonthSingle,
 		ArrivalDate:    "01/01/2023",
 		Entry:          "Hanoi",
 		ProcessingTime: db.ProcessingTime2Days,
@@ -147,16 +208,10 @@ func TestToFinalOrder_ProcessingTime2Days(t *testing.T) {
 	})
 	assert.Equal(t, []db.BillingItem{
 		{
-			Description: "E-Visa",
-			UnitPrice:   55,
+			Description: "E-Visa 1 month single entry - 2 working days",
+			UnitPrice:   100,
 			Quantity:    2,
-			Total:       110,
-		},
-		{
-			Description: "Processing time 2 working days",
-			UnitPrice:   45,
-			Quantity:    2,
-			Total:       90,
+			Total:       200,
 		},
 	}, finalOrder.BillingItems)
 	assert.Equal(t, db.OrderSummary{Total: 200}, finalOrder.Summary)
@@ -165,6 +220,7 @@ func TestToFinalOrder_ProcessingTime2Days(t *testing.T) {
 func TestToFinalOrder_ProcessingTime1Day(t *testing.T) {
 	applicants := []db.Applicant{{}, {}}
 	options := db.CartOptions{
+		VisaType:       db.VisaType1MonthSingle,
 		ArrivalDate:    "01/01/2023",
 		Entry:          "Hanoi",
 		ProcessingTime: db.ProcessingTime1Days,
@@ -181,58 +237,19 @@ func TestToFinalOrder_ProcessingTime1Day(t *testing.T) {
 	})
 	assert.Equal(t, []db.BillingItem{
 		{
-			Description: "E-Visa",
-			UnitPrice:   55,
+			Description: "E-Visa 1 month single entry - 1 working day",
+			UnitPrice:   115,
 			Quantity:    2,
-			Total:       110,
-		},
-		{
-			Description: "Processing time 1 working day",
-			UnitPrice:   60,
-			Quantity:    2,
-			Total:       120,
+			Total:       230,
 		},
 	}, finalOrder.BillingItems)
 	assert.Equal(t, db.OrderSummary{Total: 230}, finalOrder.Summary)
 }
 
-func TestToFinalOrder_ProcessingTimeSameDay(t *testing.T) {
-	applicants := []db.Applicant{{}, {}}
-	options := db.CartOptions{
-		ArrivalDate:    "01/01/2023",
-		Entry:          "Hanoi",
-		ProcessingTime: db.ProcessingTimeSameDay,
-		FastTrack:      db.FastTrackNo,
-		Car:            db.CarNo,
-		Flight:         "VN123",
-		Hotel:          "Hotel",
-	}
-	billing := db.CartBilling{}
-	finalOrder := ToFinalOrder(context.TODO(), &db.UIOrder{
-		Applicants: applicants,
-		Options:    options,
-		Billing:    billing,
-	})
-	assert.Equal(t, []db.BillingItem{
-		{
-			Description: "E-Visa",
-			UnitPrice:   55,
-			Quantity:    2,
-			Total:       110,
-		},
-		{
-			Description: "Processing time Same day",
-			UnitPrice:   70,
-			Quantity:    2,
-			Total:       140,
-		},
-	}, finalOrder.BillingItems)
-	assert.Equal(t, db.OrderSummary{Total: 250}, finalOrder.Summary)
-}
-
 func TestToFinalOrder_ProcessingTimeUrgent(t *testing.T) {
 	applicants := []db.Applicant{{}, {}}
 	options := db.CartOptions{
+		VisaType:       db.VisaType1MonthSingle,
 		ArrivalDate:    "01/01/2023",
 		Entry:          "Hanoi",
 		ProcessingTime: db.ProcessingTimeUrgent,
@@ -249,16 +266,10 @@ func TestToFinalOrder_ProcessingTimeUrgent(t *testing.T) {
 	})
 	assert.Equal(t, []db.BillingItem{
 		{
-			Description: "E-Visa",
-			UnitPrice:   55,
+			Description: "E-Visa 1 month single entry - Urgent",
+			UnitPrice:   145,
 			Quantity:    2,
-			Total:       110,
-		},
-		{
-			Description: "Processing time Urgent",
-			UnitPrice:   90,
-			Quantity:    2,
-			Total:       180,
+			Total:       290,
 		},
 	}, finalOrder.BillingItems)
 	assert.Equal(t, db.OrderSummary{Total: 290}, finalOrder.Summary)
@@ -267,6 +278,7 @@ func TestToFinalOrder_ProcessingTimeUrgent(t *testing.T) {
 func TestToFinalOrder_FastTrackNormal(t *testing.T) {
 	applicants := []db.Applicant{{}, {}}
 	options := db.CartOptions{
+		VisaType:       db.VisaType1MonthSingle,
 		ArrivalDate:    "01/01/2023",
 		Entry:          "Hanoi",
 		ProcessingTime: db.ProcessingTimeUrgent,
@@ -283,16 +295,10 @@ func TestToFinalOrder_FastTrackNormal(t *testing.T) {
 	})
 	assert.Equal(t, []db.BillingItem{
 		{
-			Description: "E-Visa",
-			UnitPrice:   55,
+			Description: "E-Visa 1 month single entry - Urgent",
+			UnitPrice:   145,
 			Quantity:    2,
-			Total:       110,
-		},
-		{
-			Description: "Processing time Urgent",
-			UnitPrice:   90,
-			Quantity:    2,
-			Total:       180,
+			Total:       290,
 		},
 		{
 			Description: "Normal fast-track",
@@ -307,6 +313,7 @@ func TestToFinalOrder_FastTrackNormal(t *testing.T) {
 func TestToFinalOrder_FastTrackVIP(t *testing.T) {
 	applicants := []db.Applicant{{}, {}}
 	options := db.CartOptions{
+		VisaType:       db.VisaType1MonthSingle,
 		ArrivalDate:    "01/01/2023",
 		Entry:          "Hanoi",
 		ProcessingTime: db.ProcessingTimeUrgent,
@@ -323,16 +330,10 @@ func TestToFinalOrder_FastTrackVIP(t *testing.T) {
 	})
 	assert.Equal(t, []db.BillingItem{
 		{
-			Description: "E-Visa",
-			UnitPrice:   55,
+			Description: "E-Visa 1 month single entry - Urgent",
+			UnitPrice:   145,
 			Quantity:    2,
-			Total:       110,
-		},
-		{
-			Description: "Processing time Urgent",
-			UnitPrice:   90,
-			Quantity:    2,
-			Total:       180,
+			Total:       290,
 		},
 		{
 			Description: "VIP fast-track",
@@ -347,6 +348,7 @@ func TestToFinalOrder_FastTrackVIP(t *testing.T) {
 func TestToFinalOrder_Car(t *testing.T) {
 	applicants := []db.Applicant{{}, {}}
 	options := db.CartOptions{
+		VisaType:       db.VisaType1MonthSingle,
 		ArrivalDate:    "01/01/2023",
 		Entry:          "Hanoi",
 		ProcessingTime: db.ProcessingTimeUrgent,
@@ -363,16 +365,10 @@ func TestToFinalOrder_Car(t *testing.T) {
 	})
 	assert.Equal(t, []db.BillingItem{
 		{
-			Description: "E-Visa",
-			UnitPrice:   55,
+			Description: "E-Visa 1 month single entry - Urgent",
+			UnitPrice:   145,
 			Quantity:    2,
-			Total:       110,
-		},
-		{
-			Description: "Processing time Urgent",
-			UnitPrice:   90,
-			Quantity:    2,
-			Total:       180,
+			Total:       290,
 		},
 		{
 			Description: "VIP fast-track",
