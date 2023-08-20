@@ -42,6 +42,8 @@ type Billing struct {
 
 type Trip struct {
 	// ArrivalDate is the raw value from woocommerce order
+	VisaType         string `bson:"visaType" json:"visaType"`
+	VisitPurpose     string `bson:"visitPurpose" json:"visitPurpose"`
 	ArrivalDate      string `bson:"arrivalDate" json:"arrivalDate"`
 	Checkpoint       string `bson:"checkpoint" json:"checkpoint"`
 	ProcessingTime   string `bson:"processingTime" json:"processingTime"`
@@ -80,6 +82,11 @@ type Applicant struct {
 	Email              string               `bson:"email" json:"email"`
 	AttachmentPortrait *ApplicantAttachment `bson:"attachmentPortrait,omitempty" json:"attachmentPortrait,omitempty"`
 	AttachmentPassport *ApplicantAttachment `bson:"attachmentPassport,omitempty" json:"attachmentPassport,omitempty"`
+	AddressHome        string               `bson:"addressHome" json:"addressHome"`
+	PhoneNumberHome    string               `bson:"phoneNumberHome" json:"phoneNumberHome"`
+	AddressVietnam     string               `bson:"addressVietnam" json:"addressVietnam"`
+	PreviousVisitCount string               `bson:"previousVisitCount" json:"previousVisitCount"`
+	LawViolation       string               `bson:"lawViolation" json:"lawViolation"`
 
 	VisaS3Key    string `bson:"visaS3Key" json:"visaS3Key"`
 	VisaSent     bool   `bson:"visaSent" json:"visaSent"`
