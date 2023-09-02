@@ -46,7 +46,7 @@ func canBeResize(filename string) bool {
 	return false
 }
 
-func resizeImage(ctx context.Context, fileContent []byte, fileName string, isHEIC bool) ([]byte, *string, error) {
+func resizeImage(ctx context.Context, fileContent []byte, fileName string, width int, isHEIC bool) ([]byte, *string, error) {
 	log := logger.FromContext(ctx)
 	log.Infof("Resize image [%s]", fileName)
 
@@ -73,7 +73,7 @@ func resizeImage(ctx context.Context, fileContent []byte, fileName string, isHEI
 	resize := imageConvertRequest{
 		Source: *tempFileURL,
 		To:     "jpeg",
-		Width:  1000,
+		Width:  width,
 	}
 	if isHEIC {
 		resize.From = lo.ToPtr("heic")
