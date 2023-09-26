@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/aws/aws-sdk-go-v2 v1.21.0
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.39.0
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.40.0
 	github.com/aws/aws-sdk-go-v2/service/sns v1.22.0
 	github.com/dchest/uniuri v1.2.0
 	github.com/google/uuid v1.3.1
