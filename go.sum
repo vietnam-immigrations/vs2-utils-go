@@ -30,8 +30,8 @@ github.com/aws/aws-sdk-go-v2/service/s3 v1.40.0 h1:wl5dxN1NONhTDQD9uaEvNsDRX29cB
 github.com/aws/aws-sdk-go-v2/service/s3 v1.40.0/go.mod h1:rDGMZA7f4pbmTtPOk5v5UM2lmX6UAbRnMDJeDvnH7AM=
 github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.21.3 h1:H6ZipEknzu7RkJW3w2PP75zd8XOdR35AEY5D57YrJtA=
 github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.21.3/go.mod h1:5W2cYXDPabUmwULErlC92ffLhtTuyv4ai+5HhdbhfNo=
-github.com/aws/aws-sdk-go-v2/service/ses v1.16.7 h1:yK0opxuSyFWmS3pL+niGStVheVccYwCFTelVrQ2nSAo=
-github.com/aws/aws-sdk-go-v2/service/ses v1.16.7/go.mod h1:2DezZ88AkYPNf3Qxf79s8bneDLzATTGVGD4Htjcyw8Y=
+github.com/aws/aws-sdk-go-v2/service/ses v1.16.8 h1:hnu5qpD5rm7H3QqgLijoSHfyG5BecWCyYIdVEzgDlx0=
+github.com/aws/aws-sdk-go-v2/service/ses v1.16.8/go.mod h1:2DezZ88AkYPNf3Qxf79s8bneDLzATTGVGD4Htjcyw8Y=
 github.com/aws/aws-sdk-go-v2/service/sns v1.22.0 h1:2fkhBbjvdOZ3aisgcgc38Z5P7qY+2temrmm3BC0HlRE=
 github.com/aws/aws-sdk-go-v2/service/sns v1.22.0/go.mod h1:eEjNDG7Y1BH7Ci9qKVH2L02se84z5GPCqXKcqEUpnXg=
 github.com/aws/aws-sdk-go-v2/service/ssm v1.38.0 h1:JON9MBvwUlM8HXylfB2caZuH3VXz9RxO4SMp2+TNc3Q=
@@ -67,8 +67,8 @@ github.com/klauspost/compress v1.15.13/go.mod h1:QPwzmACJjUTFsnSHH934V6woptycfrD
 github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe/go.mod h1:wL8QJuTMNUDYhXwkmfOly8iTdp5TEcJFWZD2D7SIkUc=
 github.com/montanaflynn/stats v0.6.6 h1:Duep6KMIDpY4Yo11iFsvyqJDyfzLF9+sndUKT+v64GQ=
 github.com/montanaflynn/stats v0.6.6/go.mod h1:etXPPgVO6n31NxCd9KQUMvCM+ve0ruNzt6R8Bnaayow=
-github.com/nam-truong-le/lambda-utils-go/v4 v4.1.84 h1:z8/EePCtIJYINx2SEH96s9/AjoaXOmZmJjnlR7WcKVw=
-github.com/nam-truong-le/lambda-utils-go/v4 v4.1.84/go.mod h1:JraHO3leZ7MOnum5TOTD/3AYSIjtkec8R2+tWItM8Ik=
+github.com/nam-truong-le/lambda-utils-go/v4 v4.1.85 h1:eiK7U4QWwJcEDXcIIg1amGDfs5n1+ZU2O4h/73Uub+A=
+github.com/nam-truong-le/lambda-utils-go/v4 v4.1.85/go.mod h1:B6EU5TTQnab5HYrSDRrs39vXUt9dxtkuLYicRePNXDE=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
