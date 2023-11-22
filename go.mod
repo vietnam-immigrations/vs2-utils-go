@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sns v1.25.3
 	github.com/dchest/uniuri v1.2.0
 	github.com/google/uuid v1.4.0
-	github.com/nam-truong-le/lambda-utils-go/v4 v4.1.168
+	github.com/nam-truong-le/lambda-utils-go/v4 v4.1.172
 	github.com/pusher/pusher-http-go/v5 v5.1.1
 	github.com/samber/lo v1.38.1
 	github.com/stretchr/testify v1.8.4
@@ -19,8 +19,8 @@ require (
 require (
 	github.com/aws/aws-lambda-go v1.41.0 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.5.1 // indirect
-	github.com/aws/aws-sdk-go-v2/config v1.25.4 // indirect
-	github.com/aws/aws-sdk-go-v2/credentials v1.16.3 // indirect
+	github.com/aws/aws-sdk-go-v2/config v1.25.5 // indirect
+	github.com/aws/aws-sdk-go-v2/credentials v1.16.4 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.14.5 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.2.4 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/endpoints/v2 v2.5.4 // indirect
@@ -32,7 +32,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.16.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.23.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ses v1.18.3 // indirect
-	github.com/aws/aws-sdk-go-v2/service/ssm v1.43.0 // indirect
+	github.com/aws/aws-sdk-go-v2/service/ssm v1.43.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sso v1.17.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.20.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.25.4 // indirect
