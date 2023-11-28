@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/aws/aws-sdk-go-v2 v1.23.1
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.45.1
-	github.com/aws/aws-sdk-go-v2/service/sns v1.25.3
+	github.com/aws/aws-sdk-go-v2/service/sns v1.25.4
 	github.com/dchest/uniuri v1.2.0
 	github.com/google/uuid v1.4.0
 	github.com/nam-truong-le/lambda-utils-go/v4 v4.1.175
