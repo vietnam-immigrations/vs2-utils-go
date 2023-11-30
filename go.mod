@@ -3,7 +3,7 @@ module github.com/vietnam-immigrations/vs2-utils-go/v2
 go 1.19
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.23.3
+	github.com/aws/aws-sdk-go-v2 v1.23.4
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.45.1
 	github.com/aws/aws-sdk-go-v2/service/sns v1.26.0
 	github.com/dchest/uniuri v1.2.0
@@ -36,7 +36,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sso v1.17.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/ssooidc v1.20.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sts v1.25.4 // indirect
-	github.com/aws/smithy-go v1.18.0 // indirect
+	github.com/aws/smithy-go v1.18.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
