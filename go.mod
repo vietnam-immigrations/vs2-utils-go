@@ -3,7 +3,7 @@ module github.com/vietnam-immigrations/vs2-utils-go/v2
 go 1.19
 
 require (
-	github.com/aws/aws-sdk-go-v2 v1.23.4
+	github.com/aws/aws-sdk-go-v2 v1.23.5
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.47.1
 	github.com/aws/aws-sdk-go-v2/service/sns v1.26.1
 	github.com/dchest/uniuri v1.2.0
