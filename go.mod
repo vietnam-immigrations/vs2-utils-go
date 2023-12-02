@@ -10,7 +10,7 @@ require (
 	github.com/google/uuid v1.4.0
 	github.com/nam-truong-le/lambda-utils-go/v4 v4.1.198
 	github.com/pusher/pusher-http-go/v5 v5.1.1
-	github.com/samber/lo v1.38.1
+	github.com/samber/lo v1.39.0
 	github.com/stretchr/testify v1.8.4
 	go.mongodb.org/mongo-driver v1.12.1
 	golang.org/x/text v0.14.0
