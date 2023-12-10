@@ -70,7 +70,8 @@ func SendCustomer(ctx context.Context, order *db.Order) error {
 				LawViolation:       app.LawViolation,
 			}
 		}),
-		TrackingURL: fmt.Sprintf("https://%s/#/?order=%s&secret=%s", cfg.CustomerDomain, order.Number, order.OrderKey),
+		TrackingURL:     fmt.Sprintf("https://%s/#/?order=%s&secret=%s", cfg.CustomerDomain, order.Number, order.OrderKey),
+		IsVisaOnArrival: order.Trip.ProcessingTime == processingTime1Day, // TODO: this must be improved
 	}, mjmlUsername, mjmlPassword)
 	if err != nil {
 		return err

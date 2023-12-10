@@ -128,6 +128,36 @@
                 >
                     Check your application status
                 </mj-button>
+                {{if .IsVisaOnArrival}}
+                <mj-text
+                        color="#55575d"
+                        line-height="16px">
+                    It's essential to familiarize yourself with the Visa On Arrival process. Please read the following
+                    information carefully:<br/><br/>
+                    The E-Visa is a fully authorized visa that grants you immediate access to Vietnam without any
+                    additional steps. On the other hand, if you choose the Visa On Arrival route, you will need to
+                    follow these steps upon receiving your Approval Letter at the airport:<br/><br/>
+                    <strong>Step 1: Arrival and Immigration</strong><br/>
+                    Upon arriving at the border, proceed to the immigration counters, ensuring you have all the required travel documents, including:
+                    <ul>
+                        <li>Passport</li>
+                        <li>Visa Approval Letter and NA1 Form</li>
+                        <li>2 Portrait Photos (4*6cm)</li>
+                        <li>Stamping Fee: US$25 per person</li>
+                    </ul>
+                    <strong>Step 2: Visa Counter</strong><br/>
+                    After landing, make your way to the Visa Counter, where you will complete the visa stamping process.<br/><br/>
+                    <strong>Step 3: Document Submission</strong><br/>
+                    Submit your passport, visa approval letter, and completed visa NA1 application form, meticulously
+                    verifying that all information matches your travel documents.<br/><br/>
+                    <strong>Step 4: Payment of Visa Stamp Fee</strong><br/>
+                    Pay the visa stamping fee of US$25 per person in cash at the payment counters. Please ensure you
+                    have the necessary currency readily available as the accepted payment method is cash.<br/><br/>
+                    <strong>Step 5: Visa Stamping</strong><br/>
+                    Once your documents and fee have been processed, an Immigration Officer will affix the visa stamp to your passport.
+                    Before leaving the counter, carefully review the stamped visa for accuracy.
+                </mj-text>
+                {{end}}
                 <mj-spacer></mj-spacer>
                 <mj-divider border-width="1px" border-color="#E6E6E6"></mj-divider>
                 <mj-spacer></mj-spacer>

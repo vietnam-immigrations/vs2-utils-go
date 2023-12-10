@@ -11,6 +11,10 @@ var VisaPriceStandard = map[string]int{
 	db.VisaType3MonthMultiple: 136,
 }
 
+var VisaPriceVOAStandard = map[string]int{
+	db.VisaType1MonthSingle: 125,
+}
+
 var VisaPricePriority = map[string]int{
 	db.VisaType1MonthSingle:   30,
 	db.VisaType1MonthMultiple: 86,
