@@ -63,11 +63,17 @@ type CartBilling struct {
 	Email2    string `bson:"email2" json:"email2"`
 }
 
+const (
+	ApplicationTypeEVisa         = "e_visa"
+	ApplicationTypeVisaOnArrival = "visa_on_arrival"
+)
+
 type UIOrder struct {
 	Applicants         []Applicant         `bson:"applicants" json:"applicants"`
 	PriorityApplicants []PriorityApplicant `bson:"priorityApplicants" json:"priorityApplicants"`
 	Options            CartOptions         `bson:"options" json:"options"`
 	Billing            CartBilling         `bson:"billing" json:"billing"`
+	ApplicationType    string              `bson:"applicationType" json:"applicationType"`
 }
 
 type BillingItem struct {

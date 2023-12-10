@@ -42,20 +42,32 @@ func ToFinalOrder(ctx context.Context, uiOrder *db.UIOrder) *db.Order {
 		}
 	}
 	if noNormalApplicants > 0 {
-		billingVisaItem = db.BillingItem{
-			Description: fmt.Sprintf("E-Visa %s", uiOrder.Options.VisaType),
-			UnitPrice:   VisaPriceStandard[uiOrder.Options.VisaType],
-			Quantity:    noNormalApplicants,
-			Total:       VisaPriceStandard[uiOrder.Options.VisaType] * noNormalApplicants,
+		if uiOrder.ApplicationType == db.ApplicationTypeVisaOnArrival {
+			billingVisaItem = db.BillingItem{
+				Description: fmt.Sprintf("Visa On Arrival %s", uiOrder.Options.VisaType),
+				UnitPrice:   VisaPriceVOAStandard[uiOrder.Options.VisaType],
+				Quantity:    noNormalApplicants,
+				Total:       VisaPriceVOAStandard[uiOrder.Options.VisaType] * noNormalApplicants,
+			}
+		} else {
+			billingVisaItem = db.BillingItem{
+				Description: fmt.Sprintf("E-Visa %s", uiOrder.Options.VisaType),
+				UnitPrice:   VisaPriceStandard[uiOrder.Options.VisaType],
+				Quantity:    noNormalApplicants,
+				Total:       VisaPriceStandard[uiOrder.Options.VisaType] * noNormalApplicants,
+			}
 		}
 	}
 
-	if processingTime, ok := ProcessingTimePrice[uiOrder.Options.VisaType][uiOrder.Options.ProcessingTime]; ok {
-		log.Infof("Adding processing time price: %+v", uiOrder.Options.ProcessingTime)
-		billingVisaItem.Description = fmt.Sprintf("%s - %s", billingVisaItem.Description, uiOrder.Options.ProcessingTime)
-		billingVisaItem.UnitPrice = processingTime + billingVisaItem.UnitPrice
-		billingVisaItem.Total = noApplicants * billingVisaItem.UnitPrice
+	if uiOrder.ApplicationType != db.ApplicationTypeVisaOnArrival {
+		if processingTime, ok := ProcessingTimePrice[uiOrder.Options.VisaType][uiOrder.Options.ProcessingTime]; ok {
+			log.Infof("Adding processing time price: %+v", uiOrder.Options.ProcessingTime)
+			billingVisaItem.Description = fmt.Sprintf("%s - %s", billingVisaItem.Description, uiOrder.Options.ProcessingTime)
+			billingVisaItem.UnitPrice = processingTime + billingVisaItem.UnitPrice
+			billingVisaItem.Total = noApplicants * billingVisaItem.UnitPrice
+		}
 	}
+
 	finalOrder.BillingItems = append(finalOrder.BillingItems, billingVisaItem)
 
 	if fastTrack, ok := FastTrackPrice[uiOrder.Options.FastTrack]; ok {

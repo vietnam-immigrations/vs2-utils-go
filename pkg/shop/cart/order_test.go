@@ -246,6 +246,36 @@ func TestToFinalOrder_ProcessingTime1Day(t *testing.T) {
 	assert.Equal(t, db.OrderSummary{Total: 230}, finalOrder.Summary)
 }
 
+func TestToFinalOrder_ProcessingTime1Day_VOA(t *testing.T) {
+	applicants := []db.Applicant{{}, {}}
+	options := db.CartOptions{
+		VisaType:       db.VisaType1MonthSingle,
+		ArrivalDate:    "01/01/2023",
+		Entry:          "Hanoi",
+		ProcessingTime: db.ProcessingTime1Days,
+		FastTrack:      db.FastTrackNo,
+		Car:            db.CarNo,
+		Flight:         "VN123",
+		Hotel:          "Hotel",
+	}
+	billing := db.CartBilling{}
+	finalOrder := ToFinalOrder(context.TODO(), &db.UIOrder{
+		Applicants:      applicants,
+		Options:         options,
+		Billing:         billing,
+		ApplicationType: db.ApplicationTypeVisaOnArrival,
+	})
+	assert.Equal(t, []db.BillingItem{
+		{
+			Description: "Visa On Arrival 1 month single entry",
+			UnitPrice:   125,
+			Quantity:    2,
+			Total:       250,
+		},
+	}, finalOrder.BillingItems)
+	assert.Equal(t, db.OrderSummary{Total: 250}, finalOrder.Summary)
+}
+
 func TestToFinalOrder_ProcessingTimeUrgent(t *testing.T) {
 	applicants := []db.Applicant{{}, {}}
 	options := db.CartOptions{
