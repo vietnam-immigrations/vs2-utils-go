@@ -176,7 +176,7 @@ const templateEmailCustomer = `<mjml>
                     Upon arriving at the border, proceed to the immigration counters, ensuring you have all the required travel documents, including:
                     <ul>
                         <li>Passport</li>
-                        <li>Visa Approval Letter and NA1 Form</li>
+                        <li><a href="https://vietnam-immigrations.org/doc/NA1%20FORM.pdf">Visa Approval Letter and NA1 Form</a></li>
                         <li>2 Portrait Photos (4*6cm)</li>
                         <li>Stamping Fee: US$25 per person</li>
                     </ul>
