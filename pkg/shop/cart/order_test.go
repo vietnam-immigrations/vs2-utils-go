@@ -49,11 +49,13 @@ func TestToFinalOrder(t *testing.T) {
 		Email2:    "mail2@mail.com",
 	}
 	finalOrder := ToFinalOrder(context.TODO(), &db.UIOrder{
-		Applicants: applicants,
-		Options:    options,
-		Billing:    billing,
+		Applicants:      applicants,
+		Options:         options,
+		Billing:         billing,
+		ApplicationType: db.ApplicationTypeEVisa,
 	})
 	assert.NotNil(t, finalOrder)
+	assert.Equal(t, finalOrder.UIOrder.ApplicationType, db.ApplicationTypeEVisa)
 	assert.NotEmpty(t, finalOrder.ID)
 	assert.NotEmpty(t, finalOrder.Secret)
 	assert.NotEmpty(t, finalOrder.CreatedAt)

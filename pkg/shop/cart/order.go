@@ -24,6 +24,7 @@ func ToFinalOrder(ctx context.Context, uiOrder *db.UIOrder) *db.Order {
 	}
 	finalOrder.Applicants = uiOrder.Applicants
 	finalOrder.PriorityApplicants = uiOrder.PriorityApplicants
+	finalOrder.ApplicationType = uiOrder.ApplicationType
 	finalOrder.Options = uiOrder.Options
 	finalOrder.Billing = uiOrder.Billing
 	finalOrder.BillingItems = make([]db.BillingItem, 0)
