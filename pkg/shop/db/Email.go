@@ -21,6 +21,8 @@ func CollectionEmail(ctx context.Context) (*mongo.Collection, error) {
 	return mongodb.Collection(ctx, database, colShopEmail)
 }
 
+const MailingListAll = "all"
+
 type Email struct {
 	ID                       primitive.ObjectID `bson:"_id" json:"id"`
 	Email                    string             `bson:"email" json:"email"`
@@ -30,6 +32,7 @@ type Email struct {
 	FullName                 string             `bson:"fullName" json:"fullName"`
 	UnsubscribedMailingLists []string           `bson:"unsubscribedMailingLists" json:"unsubscribedMailingLists"`
 	AlreadySentCampaigns     []string           `bson:"alreadySentCampaigns" json:"alreadySentCampaigns"`
+	Complaints               []any              `bson:"complaints" json:"complaints"`
 	CreatedAt                time.Time          `bson:"createdAt" json:"createdAt"`
 	UpdatedAt                time.Time          `bson:"updatedAt" json:"updatedAt"`
 }
