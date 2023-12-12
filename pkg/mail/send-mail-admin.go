@@ -19,6 +19,14 @@ import (
 )
 
 func SendAdmin(ctx context.Context, order *db.Order) error {
+	return sendAdmin(ctx, order, nil)
+}
+
+func SendAdminOverrideToEmail(ctx context.Context, order *db.Order, overrideToEmail string) error {
+	return sendAdmin(ctx, order, &overrideToEmail)
+}
+
+func sendAdmin(ctx context.Context, order *db.Order, overrideToEmail *string) error {
 	log := logger.FromContext(ctx)
 	log.Infof("send mail to partner for order [%s]", order.Number)
 
@@ -81,7 +89,7 @@ func SendAdmin(ctx context.Context, order *db.Order) error {
 
 	err = ses.Send(ctx, ses.SendProps{
 		From:    mailAddressInfo,
-		To:      []string{cfg.EmailPartner},
+		To:      []string{lo.FromPtrOr(overrideToEmail, cfg.EmailPartner)},
 		ReplyTo: mailAddressInfo,
 		BCC:     nil,
 		CC:      []string{cfg.EmailPartnerCC},

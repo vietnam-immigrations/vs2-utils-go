@@ -31,3 +31,22 @@ func TestSendAdmin(t *testing.T) {
 	err = mail.SendAdmin(ctx, order)
 	assert.NoError(t, err)
 }
+
+func TestSendAdmin_Override(t *testing.T) {
+	if testing.Short() {
+		t.Skip()
+	}
+
+	ctx := context.WithValue(context.TODO(), mycontext.FieldStage, "dev")
+	_ = os.Setenv("APP", "vs2")
+	_ = os.Setenv("LUG_LOCAL", "true")
+
+	colOrders, err := db.CollectionOrders(ctx)
+	assert.NoError(t, err)
+	findOrder := colOrders.FindOne(ctx, bson.M{"number": "65717697926"})
+	order := new(db.Order)
+	err = findOrder.Decode(order)
+	assert.NoError(t, err)
+	err = mail.SendAdminOverrideToEmail(ctx, order, "info@vietnam-immigrations.org")
+	assert.NoError(t, err)
+}
