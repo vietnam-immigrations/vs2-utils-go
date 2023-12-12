@@ -37,13 +37,13 @@ func TestSendAdmin_Override(t *testing.T) {
 		t.Skip()
 	}
 
-	ctx := context.WithValue(context.TODO(), mycontext.FieldStage, "dev")
+	ctx := context.WithValue(context.TODO(), mycontext.FieldStage, "prod")
 	_ = os.Setenv("APP", "vs2")
 	_ = os.Setenv("LUG_LOCAL", "true")
 
 	colOrders, err := db.CollectionOrders(ctx)
 	assert.NoError(t, err)
-	findOrder := colOrders.FindOne(ctx, bson.M{"number": "65717697926"})
+	findOrder := colOrders.FindOne(ctx, bson.M{"number": "50167686011"})
 	order := new(db.Order)
 	err = findOrder.Decode(order)
 	assert.NoError(t, err)

@@ -96,26 +96,32 @@ func sendAdmin(ctx context.Context, order *db.Order, overrideToEmail *string) er
 		Subject: subject,
 		HTML:    *mailHTML,
 		Attachments: lo.FlatMap(order.Applicants, func(app db.Applicant, _ int) []ses.SendPropsAttachment {
-			portraitAtt, err := s3.ReadFileBucketSSM(ctx, amplify.S3Attachment, app.AttachmentPortrait.S3Key)
-			if err != nil {
-				log.Errorf("Failed to load portrait file [%s]: %s", app.AttachmentPortrait.S3Key, err)
-				return nil
-			}
-			passportAtt, err := s3.ReadFileBucketSSM(ctx, amplify.S3Attachment, app.AttachmentPassport.S3Key)
-			if err != nil {
-				log.Errorf("Failed to load passport file [%s]: %s", app.AttachmentPassport.S3Key, err)
-			}
+			attachments := make([]ses.SendPropsAttachment, 0)
 
-			return []ses.SendPropsAttachment{
-				{
+			if app.AttachmentPortrait != nil && app.AttachmentPortrait.S3Key != "" {
+				portraitAtt, err := s3.ReadFileBucketSSM(ctx, amplify.S3Attachment, app.AttachmentPortrait.S3Key)
+				if err != nil {
+					log.Errorf("Failed to load portrait file [%s]: %s", app.AttachmentPortrait.S3Key, err)
+					return nil
+				}
+				attachments = append(attachments, ses.SendPropsAttachment{
 					Name: fileNameFromS3Key(app.AttachmentPortrait.S3Key),
 					Data: portraitAtt,
-				},
-				{
+				})
+			}
+
+			if app.AttachmentPassport != nil && app.AttachmentPassport.S3Key != "" {
+				passportAtt, err := s3.ReadFileBucketSSM(ctx, amplify.S3Attachment, app.AttachmentPassport.S3Key)
+				if err != nil {
+					log.Errorf("Failed to load passport file [%s]: %s", app.AttachmentPassport.S3Key, err)
+				}
+				attachments = append(attachments, ses.SendPropsAttachment{
 					Name: fileNameFromS3Key(app.AttachmentPassport.S3Key),
 					Data: passportAtt,
-				},
+				})
 			}
+
+			return attachments
 		}),
 	})
 
