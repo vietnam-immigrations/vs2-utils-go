@@ -1,5 +1,5 @@
-github.com/aws/aws-lambda-go v1.42.0 h1:U4QKkxLp/il15RJGAANxiT9VumQzimsUER7gokqA0+c=
-github.com/aws/aws-lambda-go v1.42.0/go.mod h1:dpMpZgvWx5vuQJfBt0zqBha60q7Dd7RfgJv23DymV8A=
+github.com/aws/aws-lambda-go v1.43.0 h1:Tdu7SnMB5bD+CbdnSq1Dg4sM68vEuGIDcQFZ+IjUfx0=
+github.com/aws/aws-lambda-go v1.43.0/go.mod h1:dpMpZgvWx5vuQJfBt0zqBha60q7Dd7RfgJv23DymV8A=
 github.com/aws/aws-sdk-go-v2 v1.24.0 h1:890+mqQ+hTpNuw0gGP6/4akolQkSToDJgHfQE7AwGuk=
 github.com/aws/aws-sdk-go-v2 v1.24.0/go.mod h1:LNh45Br1YAkEKaAqvmE1m8FUx6a5b/V0oAKV7of29b4=
 github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.5.4 h1:OCs21ST2LrepDfD3lwlQiOqIGp6JiEUqG84GzTDoyJs=
@@ -66,8 +66,8 @@ github.com/klauspost/compress v1.15.13/go.mod h1:QPwzmACJjUTFsnSHH934V6woptycfrD
 github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe/go.mod h1:wL8QJuTMNUDYhXwkmfOly8iTdp5TEcJFWZD2D7SIkUc=
 github.com/montanaflynn/stats v0.6.6 h1:Duep6KMIDpY4Yo11iFsvyqJDyfzLF9+sndUKT+v64GQ=
 github.com/montanaflynn/stats v0.6.6/go.mod h1:etXPPgVO6n31NxCd9KQUMvCM+ve0ruNzt6R8Bnaayow=
-github.com/nam-truong-le/lambda-utils-go/v4 v4.1.212 h1:AOYo8sK/hWeRO0zqHVpc0bK2RMpf5hT9bKSKPmNLZ4U=
-github.com/nam-truong-le/lambda-utils-go/v4 v4.1.212/go.mod h1:Sm1X6ZBpy1qX3ZNGDZlYlBsYSATxGL9n9mSvEw9ZSIE=
+github.com/nam-truong-le/lambda-utils-go/v4 v4.1.213 h1:zxmigWWrXFG+td91W2Q51ycreggq6CymGGyp2auHRUk=
+github.com/nam-truong-le/lambda-utils-go/v4 v4.1.213/go.mod h1:CcttM2Is7lTXpGNmJBIqlbvaig5bH16UM77CAfcKPQQ=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
