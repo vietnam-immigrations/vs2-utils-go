@@ -100,6 +100,13 @@ const (
 	OrderTypePriority OrderType = "Priority"
 )
 
+type OrderVariant string
+
+const (
+	OrderVariantEVisa         OrderVariant = ""
+	OrderVariantVisaOnArrival OrderVariant = "VisaOnArrival"
+)
+
 type Order struct {
 	ID                 primitive.ObjectID `bson:"_id" json:"id"`
 	OrderID            int                `bson:"orderId" json:"orderId"`
@@ -111,6 +118,7 @@ type Order struct {
 	Trip               Trip               `bson:"trip" json:"trip"`
 	Applicants         []Applicant        `bson:"applicants" json:"applicants"`
 	Type               OrderType          `bson:"type" json:"type"`
+	Variant            OrderVariant       `bson:"variant" json:"variant"`
 
 	AdminKey     *string   `bson:"adminKey,omitempty" json:"adminKey,omitempty"`
 	AllVisaSent  bool      `bson:"allVisaSent" json:"allVisaSent"`
