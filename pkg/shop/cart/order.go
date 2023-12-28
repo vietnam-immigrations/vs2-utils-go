@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/pkg/errors"
 	"github.com/samber/lo"
+	"github.com/shopspring/decimal"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/logger"
@@ -13,9 +15,12 @@ import (
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/shop/db"
 )
 
-func ToFinalOrder(ctx context.Context, uiOrder *db.UIOrder) *db.Order {
+func ToFinalOrder(ctx context.Context, uiOrder *db.UIOrder, prices []db.Price) (*db.Order, error) {
 	log := logger.FromContext(ctx)
 	log.Infof("Converting UI order to final order: %+v", *uiOrder)
+
+	pm := newPriceManager(prices)
+
 	finalOrder := &db.Order{
 		ID:          primitive.NewObjectID(),
 		OrderNumber: random.String(11, lo.NumbersCharset),
@@ -35,58 +40,75 @@ func ToFinalOrder(ctx context.Context, uiOrder *db.UIOrder) *db.Order {
 
 	var billingVisaItem db.BillingItem
 	if noPriorityApplicants > 0 {
+		price, err := pm.GetPriorityPrice(uiOrder.Options.VisaType, uiOrder.Options.ProcessingTime)
+		if err != nil {
+			return nil, errors.Wrap(err, "failed to get priority price")
+		}
+		priceInt := int(decimal.RequireFromString(price).IntPart())
 		billingVisaItem = db.BillingItem{
-			Description: fmt.Sprintf("[Priority] E-Visa %s", uiOrder.Options.VisaType),
-			UnitPrice:   VisaPricePriority[uiOrder.Options.VisaType],
+			Description: fmt.Sprintf("[Priority] E-Visa %s - %s", uiOrder.Options.VisaType, uiOrder.Options.ProcessingTime),
+			UnitPrice:   priceInt,
 			Quantity:    noPriorityApplicants,
-			Total:       VisaPricePriority[uiOrder.Options.VisaType] * noPriorityApplicants,
+			Total:       priceInt * noPriorityApplicants,
 		}
 	}
 	if noNormalApplicants > 0 {
 		if uiOrder.ApplicationType == db.ApplicationTypeVisaOnArrival {
+			price, err := pm.GetVOAPrice()
+			if err != nil {
+				return nil, errors.Wrap(err, "failed to get VOA price")
+			}
+			priceInt := int(decimal.RequireFromString(price).IntPart())
 			billingVisaItem = db.BillingItem{
 				Description: fmt.Sprintf("Visa On Arrival %s", uiOrder.Options.VisaType),
-				UnitPrice:   VisaPriceVOAStandard[uiOrder.Options.VisaType],
+				UnitPrice:   priceInt,
 				Quantity:    noNormalApplicants,
-				Total:       VisaPriceVOAStandard[uiOrder.Options.VisaType] * noNormalApplicants,
+				Total:       priceInt * noNormalApplicants,
 			}
 		} else {
-			billingVisaItem = db.BillingItem{
-				Description: fmt.Sprintf("E-Visa %s", uiOrder.Options.VisaType),
-				UnitPrice:   VisaPriceStandard[uiOrder.Options.VisaType],
-				Quantity:    noNormalApplicants,
-				Total:       VisaPriceStandard[uiOrder.Options.VisaType] * noNormalApplicants,
+			price, err := pm.GetEVisaPrice(uiOrder.Options.VisaType, uiOrder.Options.ProcessingTime)
+			if err != nil {
+				return nil, errors.Wrap(err, "failed to get e-visa price")
 			}
-		}
-	}
-
-	if uiOrder.ApplicationType != db.ApplicationTypeVisaOnArrival {
-		if processingTime, ok := ProcessingTimePrice[uiOrder.Options.VisaType][uiOrder.Options.ProcessingTime]; ok {
-			log.Infof("Adding processing time price: %+v", uiOrder.Options.ProcessingTime)
-			billingVisaItem.Description = fmt.Sprintf("%s - %s", billingVisaItem.Description, uiOrder.Options.ProcessingTime)
-			billingVisaItem.UnitPrice = processingTime + billingVisaItem.UnitPrice
-			billingVisaItem.Total = noApplicants * billingVisaItem.UnitPrice
+			priceInt := int(decimal.RequireFromString(price).IntPart())
+			billingVisaItem = db.BillingItem{
+				Description: fmt.Sprintf("E-Visa %s - %s", uiOrder.Options.VisaType, uiOrder.Options.ProcessingTime),
+				UnitPrice:   priceInt,
+				Quantity:    noNormalApplicants,
+				Total:       priceInt * noNormalApplicants,
+			}
 		}
 	}
 
 	finalOrder.BillingItems = append(finalOrder.BillingItems, billingVisaItem)
 
-	if fastTrack, ok := FastTrackPrice[uiOrder.Options.FastTrack]; ok {
+	fastTrackPrice, err, ok := pm.GetFastTrackPrice(uiOrder.Options.FastTrack)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed to get fast track price")
+	}
+	if ok {
+		priceInt := int(decimal.RequireFromString(fastTrackPrice).IntPart())
 		log.Infof("Adding fast track price: %+v", uiOrder.Options.FastTrack)
 		finalOrder.BillingItems = append(finalOrder.BillingItems, db.BillingItem{
 			Description: uiOrder.Options.FastTrack,
-			UnitPrice:   fastTrack,
+			UnitPrice:   priceInt,
 			Quantity:    noApplicants,
-			Total:       fastTrack * noApplicants,
+			Total:       priceInt * noApplicants,
 		})
 	}
-	if car, ok := CarPrice[uiOrder.Options.Car]; ok {
+
+	if uiOrder.Options.Car == db.CarYes {
+		carPrice, err := pm.GetCarPrice()
+		if err != nil {
+			return nil, errors.Wrap(err, "failed to get car price")
+		}
+		priceInt := int(decimal.RequireFromString(carPrice).IntPart())
 		log.Infof("Adding car price: %+v", uiOrder.Options.Car)
 		finalOrder.BillingItems = append(finalOrder.BillingItems, db.BillingItem{
 			Description: "Car pickup",
-			UnitPrice:   car,
+			UnitPrice:   priceInt,
 			Quantity:    1,
-			Total:       car,
+			Total:       priceInt,
 		})
 	}
 
@@ -96,5 +118,5 @@ func ToFinalOrder(ctx context.Context, uiOrder *db.UIOrder) *db.Order {
 	finalOrder.Summary = db.OrderSummary{
 		Total: total,
 	}
-	return finalOrder
+	return finalOrder, nil
 }

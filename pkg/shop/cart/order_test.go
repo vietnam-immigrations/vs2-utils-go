@@ -9,6 +9,95 @@ import (
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/shop/db"
 )
 
+var (
+	prices = []db.Price{
+		{
+			Key:   db.PriceKeyEVisaNormal1MonthSingle,
+			Value: "55",
+		},
+		{
+			Key:   db.PriceKeyEVisaNormal1MonthMulti,
+			Value: "136",
+		},
+		{
+			Key:   db.PriceKeyEVisaNormal3MonthSingle,
+			Value: "116",
+		},
+		{
+			Key:   db.PriceKeyEVisaNormal3MonthMulti,
+			Value: "136",
+		},
+		{
+			Key:   db.PriceKeyEVisa2Day1MonthSingle,
+			Value: "100",
+		},
+		{
+			Key:   db.PriceKeyEVisa2Day1MonthMulti,
+			Value: "155",
+		},
+		{
+			Key:   db.PriceKeyEVisa2Day3MonthSingle,
+			Value: "136",
+		},
+		{
+			Key:   db.PriceKeyEVisa2Day3MonthMulti,
+			Value: "165",
+		},
+		{
+			Key:   db.PriceKeyEVisa1Day1MonthSingle,
+			Value: "115",
+		},
+		{
+			Key:   db.PriceKeyEVisa1Day1MonthMulti,
+			Value: "195",
+		},
+		{
+			Key:   db.PriceKeyEVisa1Day3MonthSingle,
+			Value: "145",
+		},
+		{
+			Key:   db.PriceKeyEVisa1Day3MonthMulti,
+			Value: "195",
+		},
+		{
+			Key:   db.PriceKeyEVisaUrgent1MonthSingle,
+			Value: "145",
+		},
+		{
+			Key:   db.PriceKeyEVisaUrgent1MonthMulti,
+			Value: "215",
+		},
+		{
+			Key:   db.PriceKeyEVisaUrgent3MonthSingle,
+			Value: "185",
+		},
+		{
+			Key:   db.PriceKeyEVisaUrgent3MonthMulti,
+			Value: "225",
+		},
+		{
+			Key:   db.PriceKeyPriority2Day1MonthSingle,
+			Value: "75",
+		},
+		{
+			Key:   db.PriceKeyVisaOnArrival1Day1MonthSingle,
+			Value: "125",
+		},
+		{
+			Key:   db.PriceKeyFastTrackNormal,
+			Value: "65",
+		},
+		{
+			Key:   db.PriceKeyFastTrackVIP,
+			Value: "95",
+		},
+		{
+			Key:   db.PriceKeyPickupCar,
+			Value: "35",
+		},
+	}
+)
+
 func TestToFinalOrder(t *testing.T) {
 	applicants := []db.Applicant{{
 		PortraitFile:   "portrait-file",
@@ -48,12 +137,14 @@ func TestToFinalOrder(t *testing.T) {
 		Email:     "mail@mail.com",
 		Email2:    "mail2@mail.com",
 	}
-	finalOrder := ToFinalOrder(context.TODO(), &db.UIOrder{
+	finalOrder, err := ToFinalOrder(context.TODO(), &db.UIOrder{
 		Applicants:      applicants,
 		Options:         options,
 		Billing:         billing,
 		ApplicationType: db.ApplicationTypeEVisa,
-	})
+	}, prices)
+
+	assert.NoError(t, err)
 	assert.NotNil(t, finalOrder)
 	assert.Equal(t, finalOrder.UIOrder.ApplicationType, db.ApplicationTypeEVisa)
 	assert.NotEmpty(t, finalOrder.ID)
@@ -65,7 +156,7 @@ func TestToFinalOrder(t *testing.T) {
 	assert.Equal(t, billing, finalOrder.Billing)
 	assert.Equal(t, []db.BillingItem{
 		{
-			Description: "E-Visa 1 month single entry",
+			Description: "E-Visa 1 month single entry - 10-12 working days",
 			UnitPrice:   55,
 			Quantity:    2,
 			Total:       110,
@@ -114,11 +205,13 @@ func TestToFinalOrder_3Month(t *testing.T) {
 		Email:     "mail@mail.com",
 		Email2:    "mail2@mail.com",
 	}
-	finalOrder := ToFinalOrder(context.TODO(), &db.UIOrder{
+	finalOrder, err := ToFinalOrder(context.TODO(), &db.UIOrder{
 		Applicants: applicants,
 		Options:    options,
 		Billing:    billing,
-	})
+	}, prices)
+
+	assert.NoError(t, err)
 	assert.NotNil(t, finalOrder)
 	assert.NotEmpty(t, finalOrder.ID)
 	assert.NotEmpty(t, finalOrder.Secret)
@@ -129,7 +222,7 @@ func TestToFinalOrder_3Month(t *testing.T) {
 	assert.Equal(t, billing, finalOrder.Billing)
 	assert.Equal(t, []db.BillingItem{
 		{
-			Description: "E-Visa 3 months single entry",
+			Description: "E-Visa 3 months single entry - 10-12 working days",
 			UnitPrice:   116,
 			Quantity:    2,
 			Total:       232,
@@ -164,12 +257,14 @@ func TestToFinalOrder_Priority(t *testing.T) {
 		Email:     "mail@mail.com",
 		Email2:    "mail2@mail.com",
 	}
-	finalOrder := ToFinalOrder(context.TODO(), &db.UIOrder{
+	finalOrder, err := ToFinalOrder(context.TODO(), &db.UIOrder{
 		Applicants:         make([]db.Applicant, 0),
 		PriorityApplicants: priorityApplicants,
 		Options:            options,
 		Billing:            billing,
-	})
+	}, prices)
+
+	assert.NoError(t, err)
 	assert.NotNil(t, finalOrder)
 	assert.NotEmpty(t, finalOrder.ID)
 	assert.NotEmpty(t, finalOrder.Secret)
@@ -203,11 +298,13 @@ func TestToFinalOrder_ProcessingTime2Days(t *testing.T) {
 		Hotel:          "Hotel",
 	}
 	billing := db.CartBilling{}
-	finalOrder := ToFinalOrder(context.TODO(), &db.UIOrder{
+	finalOrder, err := ToFinalOrder(context.TODO(), &db.UIOrder{
 		Applicants: applicants,
 		Options:    options,
 		Billing:    billing,
-	})
+	}, prices)
+
+	assert.NoError(t, err)
 	assert.Equal(t, []db.BillingItem{
 		{
 			Description: "E-Visa 1 month single entry - 2 working days",
@@ -232,11 +329,13 @@ func TestToFinalOrder_ProcessingTime1Day(t *testing.T) {
 		Hotel:          "Hotel",
 	}
 	billing := db.CartBilling{}
-	finalOrder := ToFinalOrder(context.TODO(), &db.UIOrder{
+	finalOrder, err := ToFinalOrder(context.TODO(), &db.UIOrder{
 		Applicants: applicants,
 		Options:    options,
 		Billing:    billing,
-	})
+	}, prices)
+
+	assert.NoError(t, err)
 	assert.Equal(t, []db.BillingItem{
 		{
 			Description: "E-Visa 1 month single entry - 1 working day",
@@ -261,12 +360,14 @@ func TestToFinalOrder_ProcessingTime1Day_VOA(t *testing.T) {
 		Hotel:          "Hotel",
 	}
 	billing := db.CartBilling{}
-	finalOrder := ToFinalOrder(context.TODO(), &db.UIOrder{
+	finalOrder, err := ToFinalOrder(context.TODO(), &db.UIOrder{
 		Applicants:      applicants,
 		Options:         options,
 		Billing:         billing,
 		ApplicationType: db.ApplicationTypeVisaOnArrival,
-	})
+	}, prices)
+
+	assert.NoError(t, err)
 	assert.Equal(t, []db.BillingItem{
 		{
 			Description: "Visa On Arrival 1 month single entry",
@@ -291,11 +392,13 @@ func TestToFinalOrder_ProcessingTimeUrgent(t *testing.T) {
 		Hotel:          "Hotel",
 	}
 	billing := db.CartBilling{}
-	finalOrder := ToFinalOrder(context.TODO(), &db.UIOrder{
+	finalOrder, err := ToFinalOrder(context.TODO(), &db.UIOrder{
 		Applicants: applicants,
 		Options:    options,
 		Billing:    billing,
-	})
+	}, prices)
+
+	assert.NoError(t, err)
 	assert.Equal(t, []db.BillingItem{
 		{
 			Description: "E-Visa 1 month single entry - Urgent",
@@ -320,11 +423,13 @@ func TestToFinalOrder_FastTrackNormal(t *testing.T) {
 		Hotel:          "Hotel",
 	}
 	billing := db.CartBilling{}
-	finalOrder := ToFinalOrder(context.TODO(), &db.UIOrder{
+	finalOrder, err := ToFinalOrder(context.TODO(), &db.UIOrder{
 		Applicants: applicants,
 		Options:    options,
 		Billing:    billing,
-	})
+	}, prices)
+
+	assert.NoError(t, err)
 	assert.Equal(t, []db.BillingItem{
 		{
 			Description: "E-Visa 1 month single entry - Urgent",
@@ -355,11 +460,13 @@ func TestToFinalOrder_FastTrackVIP(t *testing.T) {
 		Hotel:          "Hotel",
 	}
 	billing := db.CartBilling{}
-	finalOrder := ToFinalOrder(context.TODO(), &db.UIOrder{
+	finalOrder, err := ToFinalOrder(context.TODO(), &db.UIOrder{
 		Applicants: applicants,
 		Options:    options,
 		Billing:    billing,
-	})
+	}, prices)
+
+	assert.NoError(t, err)
 	assert.Equal(t, []db.BillingItem{
 		{
 			Description: "E-Visa 1 month single entry - Urgent",
@@ -390,11 +497,13 @@ func TestToFinalOrder_Car(t *testing.T) {
 		Hotel:          "Hotel",
 	}
 	billing := db.CartBilling{}
-	finalOrder := ToFinalOrder(context.TODO(), &db.UIOrder{
+	finalOrder, err := ToFinalOrder(context.TODO(), &db.UIOrder{
 		Applicants: applicants,
 		Options:    options,
 		Billing:    billing,
-	})
+	}, prices)
+
+	assert.NoError(t, err)
 	assert.Equal(t, []db.BillingItem{
 		{
 			Description: "E-Visa 1 month single entry - Urgent",
