@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
 	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/aws/secretsmanager"
@@ -20,7 +21,7 @@ func CollectionConfiguration(ctx context.Context) (*mongo.Collection, error) {
 }
 
 type Configuration struct {
-	ID        string `bson:"_id" json:"id"`
-	Key       string `bson:"key" json:"key"`
-	BoolValue *bool  `bson:"boolValue,omitempty" json:"boolValue,omitempty"`
+	ID        primitive.ObjectID `bson:"_id" json:"id"`
+	Key       string             `bson:"key" json:"key"`
+	BoolValue *bool              `bson:"boolValue,omitempty" json:"boolValue,omitempty"`
 }
