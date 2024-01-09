@@ -16,14 +16,37 @@ import (
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/amplify"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/notification"
+	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/shop/configuration"
+	shopDB "github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/shop/db"
 )
 
-func SendAdmin(ctx context.Context, order *db.Order) error {
-	return sendAdmin(ctx, order, nil)
+var mapApplicationType = map[db.OrderVariant]string{
+	db.OrderVariantEVisa:         shopDB.ApplicationTypeEVisa,
+	db.OrderVariantVisaOnArrival: shopDB.ApplicationTypeVisaOnArrival,
 }
 
-func SendAdminOverrideToEmail(ctx context.Context, order *db.Order, overrideToEmail string) error {
-	return sendAdmin(ctx, order, &overrideToEmail)
+var mapApplicantType = map[db.OrderType]string{
+	db.OrderTypeVisa:     "",
+	db.OrderTypePriority: "__priority",
+}
+
+func SendAdmin(ctx context.Context, order *db.Order) error {
+	log := logger.FromContext(ctx)
+	variantKey := mapApplicationType[order.Variant]
+	processingTime := order.Trip.ProcessingTime
+	typeKey := mapApplicantType[order.Type]
+	configKey := fmt.Sprintf("email_partner__%s__%s%s", variantKey, processingTime, typeKey)
+	enabled, err := configuration.BoolValueOr(ctx, configKey, true) // default behavior is enabled
+	if err != nil {
+		log.Errorf("Failed to get config [%s]: %s", configKey, err)
+		return err
+	}
+	if enabled {
+		return sendAdmin(ctx, order, nil)
+	} else {
+		log.Infof("Skip sending email to partner for order [%s]", order.Number)
+		return sendAdmin(ctx, order, lo.ToPtr("info@vietnam-immigrations.org"))
+	}
 }
 
 func sendAdmin(ctx context.Context, order *db.Order, overrideToEmail *string) error {
