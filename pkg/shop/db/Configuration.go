@@ -22,5 +22,5 @@ func CollectionConfiguration(ctx context.Context) (*mongo.Collection, error) {
 type Configuration struct {
 	ID        string `bson:"_id" json:"id"`
 	Key       string `bson:"key" json:"key"`
-	BoolValue *bool  `bson:"boolValue" json:"boolValue"`
+	BoolValue *bool  `bson:"boolValue,omitempty" json:"boolValue,omitempty"`
 }
