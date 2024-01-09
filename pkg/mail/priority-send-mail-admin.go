@@ -19,6 +19,22 @@ import (
 func SendPriorityAdmin(ctx context.Context, order *db.Order) error {
 	log := logger.FromContext(ctx)
 	log.Infof("send priority email to partner for order [%s]", order.Number)
+	enabled, err := checkSendMailAdminEnabled(ctx, order)
+	if err != nil {
+		log.Errorf("Failed to check send mail admin enabled: %s", err)
+		return err
+	}
+	if enabled {
+		return sendPriorityAdmin(ctx, order, nil)
+	} else {
+		log.Infof("Skip sending email to partner for order [%s]", order.Number)
+		return sendPriorityAdmin(ctx, order, lo.ToPtr("info@vietnam-immigrations.org"))
+	}
+}
+
+func sendPriorityAdmin(ctx context.Context, order *db.Order, overrideToEmail *string) error {
+	log := logger.FromContext(ctx)
+	log.Infof("send priority email to partner for order [%s]", order.Number)
 
 	cfg, err := db.GetConfig(ctx)
 	if err != nil {
@@ -73,7 +89,7 @@ func SendPriorityAdmin(ctx context.Context, order *db.Order) error {
 
 	err = ses.Send(ctx, ses.SendProps{
 		From:        mailAddressInfo,
-		To:          []string{cfg.EmailPartner},
+		To:          []string{lo.FromPtrOr(overrideToEmail, cfg.EmailPartner)},
 		ReplyTo:     mailAddressInfo,
 		CC:          []string{cfg.EmailPartnerCC},
 		BCC:         nil,

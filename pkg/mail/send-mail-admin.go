@@ -32,13 +32,9 @@ var mapApplicantType = map[db.OrderType]string{
 
 func SendAdmin(ctx context.Context, order *db.Order) error {
 	log := logger.FromContext(ctx)
-	variantKey := mapApplicationType[order.Variant]
-	processingTime := order.Trip.ProcessingTime
-	typeKey := mapApplicantType[order.Type]
-	configKey := fmt.Sprintf("email_partner__%s__%s%s", variantKey, processingTime, typeKey)
-	enabled, err := configuration.BoolValueOr(ctx, configKey, true) // default behavior is enabled
+	enabled, err := checkSendMailAdminEnabled(ctx, order)
 	if err != nil {
-		log.Errorf("Failed to get config [%s]: %s", configKey, err)
+		log.Errorf("Failed to check send mail admin enabled: %s", err)
 		return err
 	}
 	if enabled {
@@ -47,6 +43,20 @@ func SendAdmin(ctx context.Context, order *db.Order) error {
 		log.Infof("Skip sending email to partner for order [%s]", order.Number)
 		return sendAdmin(ctx, order, lo.ToPtr("info@vietnam-immigrations.org"))
 	}
+}
+
+func checkSendMailAdminEnabled(ctx context.Context, order *db.Order) (bool, error) {
+	log := logger.FromContext(ctx)
+	variantKey := mapApplicationType[order.Variant]
+	processingTime := order.Trip.ProcessingTime
+	typeKey := mapApplicantType[order.Type]
+	configKey := fmt.Sprintf("email_partner__%s__%s%s", variantKey, processingTime, typeKey)
+	enabled, err := configuration.BoolValueOr(ctx, configKey, true) // default behavior is enabled
+	if err != nil {
+		log.Errorf("Failed to get config [%s]: %s", configKey, err)
+		return false, err
+	}
+	return enabled, err
 }
 
 func sendAdmin(ctx context.Context, order *db.Order, overrideToEmail *string) error {
