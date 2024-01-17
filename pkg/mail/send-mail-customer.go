@@ -7,11 +7,12 @@ import (
 
 	"github.com/samber/lo"
 
+	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
+
 	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/aws/secretsmanager"
 	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/aws/ses"
 	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/logger"
 	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/mail"
-	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
 )
 
 func SendCustomer(ctx context.Context, order *db.Order) error {
@@ -71,7 +72,7 @@ func SendCustomer(ctx context.Context, order *db.Order) error {
 			}
 		}),
 		TrackingURL:     fmt.Sprintf("https://%s/#/?order=%s&secret=%s", cfg.CustomerDomain, order.Number, order.OrderKey),
-		IsVisaOnArrival: order.Trip.ProcessingTime == processingTime1Day, // TODO: this must be improved
+		IsVisaOnArrival: order.Variant == db.OrderVariantVisaOnArrival,
 	}, mjmlUsername, mjmlPassword)
 	if err != nil {
 		return err
