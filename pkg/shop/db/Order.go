@@ -39,8 +39,10 @@ type Applicant struct {
 }
 
 type PriorityApplicant struct {
-	Code  string `bson:"code" json:"code"`
-	Email string `bson:"email" json:"email"`
+	PortraitFile string `bson:"portraitFile" json:"portraitFile"`
+	PassportFile string `bson:"passportFile" json:"passportFile"`
+	Code         string `bson:"code" json:"code"`
+	Email        string `bson:"email" json:"email"`
 }
 
 type CartOptions struct {
