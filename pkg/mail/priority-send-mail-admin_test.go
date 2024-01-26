@@ -24,7 +24,7 @@ func TestSendPriorityAdmin(t *testing.T) {
 
 	colOrders, err := db.CollectionOrders(ctx)
 	assert.NoError(t, err)
-	findOrder := colOrders.FindOne(ctx, bson.M{"number": "140"})
+	findOrder := colOrders.FindOne(ctx, bson.M{"number": "12621283177"})
 	order := new(db.Order)
 	err = findOrder.Decode(order)
 	assert.NoError(t, err)
