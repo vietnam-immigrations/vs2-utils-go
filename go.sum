@@ -28,8 +28,8 @@ github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.17.3 h1:4t+QEX7BsXz98W
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.17.3/go.mod h1:oFcjjUq5Hm09N9rpxTdeMeLeQcxS7mIkBkL8qUKng+A=
 github.com/aws/aws-sdk-go-v2/service/s3 v1.52.0 h1:k7gL76sSR0e2pLphjfmjD/+pDDtoOHvWp8ezpTsdyes=
 github.com/aws/aws-sdk-go-v2/service/s3 v1.52.0/go.mod h1:MGTaf3x/+z7ZGugCGvepnx2DS6+caCYYqKhzVoLNYPk=
-github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.28.2 h1:WrqqLhD5St2cbXsvR0yuY43pdhXsUL0yjQepBJIpTvI=
-github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.28.2/go.mod h1:GvNHKQAAOSKjmlccE/+Ww2gDbwYP9EewIuvWiQSquQs=
+github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.28.3 h1:nMvMpooRz9Kbbn+NPoWdQ4SPdjM6HzVJ6Wzsa1IgRwI=
+github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.28.3/go.mod h1:GvNHKQAAOSKjmlccE/+Ww2gDbwYP9EewIuvWiQSquQs=
 github.com/aws/aws-sdk-go-v2/service/ses v1.22.2 h1:cW5JtW23Lio3KDJ4l3jqRiOcCPKxJg7ooRA1SpIiuMo=
 github.com/aws/aws-sdk-go-v2/service/ses v1.22.2/go.mod h1:MLj/NROJoperecxBME2zMN/O8Zrm0wv+6ah1Uqwpa1E=
 github.com/aws/aws-sdk-go-v2/service/sns v1.29.2 h1:kHm1SYs/NkxZpKINc4zOXOLJHVMzKtU4d7FlAMtDm50=
@@ -62,8 +62,8 @@ github.com/klauspost/compress v1.15.13 h1:NFn1Wr8cfnenSJSA46lLq4wHCcBzKTSjnBIexD
 github.com/klauspost/compress v1.15.13/go.mod h1:QPwzmACJjUTFsnSHH934V6woptycfrDDJnH7hvFVbGM=
 github.com/montanaflynn/stats v0.6.6 h1:Duep6KMIDpY4Yo11iFsvyqJDyfzLF9+sndUKT+v64GQ=
 github.com/montanaflynn/stats v0.6.6/go.mod h1:etXPPgVO6n31NxCd9KQUMvCM+ve0ruNzt6R8Bnaayow=
-github.com/nam-truong-le/lambda-utils-go/v4 v4.1.243 h1:8n5qvVhk85o9WKbXxvEvybTrKc22PmdBcrfDN7u5hDQ=
-github.com/nam-truong-le/lambda-utils-go/v4 v4.1.243/go.mod h1:kWm5JByE4N5hV0msskCr9e1nhKryg0uywvPQAKUOj+U=
+github.com/nam-truong-le/lambda-utils-go/v4 v4.1.244 h1:KWpmP2aFdLlBpmpy4UclmHNRBvEQYGdJYquVyHaDpf0=
+github.com/nam-truong-le/lambda-utils-go/v4 v4.1.244/go.mod h1:8XBWFJUlyZghWchGuqeX5/P1Pf5ojzvjzwCDhrngX+w=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
