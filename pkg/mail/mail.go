@@ -19,5 +19,6 @@ const (
 )
 
 const (
-	mailAddressInfo = "info@vietnam-immigrations.org"
+	mailAddressInfo        = "info@vietnam-immigrations.org"
+	alternativeMailAddress = "noreply@vietnamvisavn.com"
 )

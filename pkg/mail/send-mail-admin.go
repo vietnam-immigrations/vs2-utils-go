@@ -120,8 +120,8 @@ func sendAdmin(ctx context.Context, order *db.Order, overrideToEmail *string) er
 		return err
 	}
 
-	err = ses.Send(ctx, ses.SendProps{
-		From:    mailAddressInfo,
+	err = SendUseBrevo(ctx, ses.SendProps{
+		From:    alternativeMailAddress,
 		To:      []string{lo.FromPtrOr(overrideToEmail, cfg.EmailPartner)},
 		ReplyTo: mailAddressInfo,
 		BCC:     nil,

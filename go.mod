@@ -7,6 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.53.0
 	github.com/aws/aws-sdk-go-v2/service/sns v1.29.3
 	github.com/dchest/uniuri v1.2.0
+	github.com/getbrevo/brevo-go v1.0.2
 	github.com/google/uuid v1.6.0
 	github.com/nam-truong-le/lambda-utils-go/v4 v4.1.247
 	github.com/pkg/errors v0.9.1
@@ -19,6 +20,7 @@ require (
 )
 
 require (
+	github.com/antihax/optional v1.0.0 // indirect
 	github.com/aws/aws-lambda-go v1.46.0 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.6.1 // indirect
 	github.com/aws/aws-sdk-go-v2/config v1.27.9 // indirect
@@ -40,6 +42,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.28.5 // indirect
 	github.com/aws/smithy-go v1.20.1 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/golang/protobuf v1.4.2 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
 	github.com/klauspost/compress v1.15.13 // indirect
@@ -52,8 +55,12 @@ require (
 	github.com/youmark/pkcs8 v0.0.0-20201027041543-1326539a0a0a // indirect
 	golang.org/x/crypto v0.17.0 // indirect
 	golang.org/x/exp v0.0.0-20221215174704-0915cd710c24 // indirect
+	golang.org/x/net v0.10.0 // indirect
+	golang.org/x/oauth2 v0.0.0-20220608161450-d0670ef3b1eb // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.15.0 // indirect
+	google.golang.org/appengine v1.6.6 // indirect
+	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/alexcesaro/quotedprintable.v3 v3.0.0-20150716171945-2caba252f4dc // indirect
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
