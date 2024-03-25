@@ -77,8 +77,8 @@ func SendCustomer(ctx context.Context, order *db.Order) error {
 	if err != nil {
 		return err
 	}
-	err = ses.Send(ctx, ses.SendProps{
-		From: mailAddressInfo,
+	err = SendUseBrevo(ctx, ses.SendProps{
+		From: alternativeMailAddress,
 		To: lo.Compact([]string{
 			order.Billing.Email, order.Billing.Email2,
 		}),
