@@ -90,7 +90,7 @@ func sendPriorityAdmin(ctx context.Context, order *db.Order, overrideToEmail *st
 	}
 
 	err = SendUseBrevo(ctx, ses.SendProps{
-		From:    alternativeMailAddress,
+		From:    mailAddressInfo,
 		To:      []string{lo.FromPtrOr(overrideToEmail, cfg.EmailPartner)},
 		ReplyTo: mailAddressInfo,
 		CC:      []string{cfg.EmailPartnerCC},

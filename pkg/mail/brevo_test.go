@@ -19,7 +19,7 @@ func TestSendUseBrevo(t *testing.T) {
 	_ = os.Setenv("APP", "vs2")
 	_ = os.Setenv("LUG_LOCAL", "true")
 	err := SendUseBrevo(ctx, ses.SendProps{
-		From:    "noreply@vietnamvisavn.com",
+		From:    "info@vietnam-immigrations.org",
 		To:      []string{"lenamtruong@gmail.com"},
 		HTML:    "<h1>Test</h1>",
 		Subject: "Test",
