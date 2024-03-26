@@ -38,7 +38,7 @@ func SendCustomerPending(ctx context.Context, order *db.Order) error {
 		return err
 	}
 	err = SendUseBrevo(ctx, ses.SendProps{
-		From:    alternativeMailAddress,
+		From:    mailAddressInfo,
 		To:      lo.Compact([]string{order.Billing.Email, order.Billing.Email2}),
 		CC:      []string{cfg.EmailCustomerCC},
 		ReplyTo: mailAddressInfo,
