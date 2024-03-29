@@ -33,6 +33,7 @@ type Email struct {
 	UnsubscribedMailingLists []string           `bson:"unsubscribedMailingLists" json:"unsubscribedMailingLists"`
 	AlreadySentCampaigns     []string           `bson:"alreadySentCampaigns" json:"alreadySentCampaigns"`
 	Complaints               []any              `bson:"complaints" json:"complaints"`
+	Exported                 bool               `bson:"exported" json:"exported"` // Exported indicates if the email has been exported to the mailing list in mailjet
 	CreatedAt                time.Time          `bson:"createdAt" json:"createdAt"`
 	UpdatedAt                time.Time          `bson:"updatedAt" json:"updatedAt"`
 }
