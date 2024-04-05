@@ -55,6 +55,7 @@ type CartOptions struct {
 	Car            string `bson:"car" json:"car"`
 	Flight         string `bson:"flight" json:"flight"`
 	Hotel          string `bson:"hotel" json:"hotel"`
+	Subscribed     *bool  `bson:"subscribed,omitempty" json:"subscribed,omitempty"`
 }
 
 type CartBilling struct {
