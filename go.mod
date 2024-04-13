@@ -9,13 +9,13 @@ require (
 	github.com/dchest/uniuri v1.2.0
 	github.com/getbrevo/brevo-go v1.0.2
 	github.com/google/uuid v1.6.0
-	github.com/nam-truong-le/lambda-utils-go/v4 v4.1.251
+	github.com/nam-truong-le/lambda-utils-go/v4 v4.1.252
 	github.com/pkg/errors v0.9.1
 	github.com/pusher/pusher-http-go/v5 v5.1.1
 	github.com/samber/lo v1.39.0
 	github.com/shopspring/decimal v1.4.0
 	github.com/stretchr/testify v1.9.0
-	go.mongodb.org/mongo-driver v1.14.0
+	go.mongodb.org/mongo-driver v1.15.0
 	golang.org/x/text v0.14.0
 )
 
