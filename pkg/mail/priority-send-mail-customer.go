@@ -32,7 +32,9 @@ func SendPriorityCustomer(ctx context.Context, order *db.Order) error {
 		return err
 	}
 	mailHTML, err := mail.Render(ctx, templateEmailPriorityCustomer, templateEmailPriorityCustomerProps{
-		FullName: strings.ToUpper(fmt.Sprintf("%s %s", order.Billing.FirstName, order.Billing.LastName)),
+		FullName:    strings.ToUpper(fmt.Sprintf("%s %s", order.Billing.FirstName, order.Billing.LastName)),
+		ArrivalDate: order.Trip.ArrivalDate,
+		Entry:       order.Trip.Checkpoint,
 		Applicants: lo.Map(order.Applicants, func(app db.Applicant, i int) templateEmailPriorityCustomerPropsApplicant {
 			return templateEmailPriorityCustomerPropsApplicant{
 				Title:            fmt.Sprintf("Applicant %d", i+1),

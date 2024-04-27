@@ -9,6 +9,7 @@
                         We are pleased to inform you that your payment has been successfully processed, and we
                         have recorded the following details:</p>
                     <p style="color: darkblue">Information details:</p>
+                    <p>Arrival on {{.ArrivalDate}} <strong>(DD/MM/YYYY)</strong> at {{.Entry}}</p>
                     {{range .Applicants}}
                         <p>
                             <strong>{{.Title}}</strong>
