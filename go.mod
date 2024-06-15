@@ -9,7 +9,7 @@ require (
 	github.com/dchest/uniuri v1.2.0
 	github.com/getbrevo/brevo-go v1.0.3
 	github.com/google/uuid v1.6.0
-	github.com/nam-truong-le/lambda-utils-go/v4 v4.1.269
+	github.com/nam-truong-le/lambda-utils-go/v4 v4.1.270
 	github.com/pkg/errors v0.9.1
 	github.com/pusher/pusher-http-go/v5 v5.1.1
 	github.com/samber/lo v1.39.0
