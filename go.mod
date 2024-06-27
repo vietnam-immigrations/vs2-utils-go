@@ -12,7 +12,7 @@ require (
 	github.com/nam-truong-le/lambda-utils-go/v4 v4.1.274
 	github.com/pkg/errors v0.9.1
 	github.com/pusher/pusher-http-go/v5 v5.1.1
-	github.com/samber/lo v1.39.0
+	github.com/samber/lo v1.41.0
 	github.com/shopspring/decimal v1.4.0
 	github.com/stretchr/testify v1.9.0
 	go.mongodb.org/mongo-driver v1.15.1
