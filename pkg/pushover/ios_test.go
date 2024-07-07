@@ -1,4 +1,4 @@
-package pushover_test
+package pushover
 
 import (
 	"context"
@@ -8,10 +8,9 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	mycontext "github.com/nam-truong-le/lambda-utils-go/v4/pkg/context"
-	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/pushover"
 )
 
-func TestSend(t *testing.T) {
+func TestSendToIOSApp(t *testing.T) {
 	if testing.Short() {
 		t.Skip()
 	}
@@ -19,6 +18,7 @@ func TestSend(t *testing.T) {
 	ctx := context.WithValue(context.TODO(), mycontext.FieldStage, "dev")
 	err := os.Setenv("APP", "vs2")
 	assert.NoError(t, err)
-	err = pushover.Send(ctx, "a title", "a message")
+
+	err = sendToIOSApp(ctx, "test title", "test description")
 	assert.NoError(t, err)
 }

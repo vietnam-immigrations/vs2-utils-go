@@ -20,6 +20,14 @@ const (
 
 func Send(ctx context.Context, title, message string) error {
 	log := logger.FromContext(ctx)
+
+	// send ios push notification
+	err := sendToIOSApp(ctx, title, message)
+	if err != nil {
+		log.Errorf("Failed to send to ios app: %s", err)
+		// will not return here, continue to send pushover
+	}
+
 	log.Infof("Pushover message [%s]", title)
 
 	cfg, err := db.GetConfig(ctx)
