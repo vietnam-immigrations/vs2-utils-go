@@ -136,8 +136,8 @@ github.com/klauspost/compress v1.15.13 h1:NFn1Wr8cfnenSJSA46lLq4wHCcBzKTSjnBIexD
 github.com/klauspost/compress v1.15.13/go.mod h1:QPwzmACJjUTFsnSHH934V6woptycfrDDJnH7hvFVbGM=
 github.com/montanaflynn/stats v0.7.1 h1:etflOAAHORrCC44V+aR6Ftzort912ZU+YLiSTuV8eaE=
 github.com/montanaflynn/stats v0.7.1/go.mod h1:etXPPgVO6n31NxCd9KQUMvCM+ve0ruNzt6R8Bnaayow=
-github.com/nam-truong-le/lambda-utils-go/v4 v4.2.3 h1:JxdgJ7Pru10KXArjMnzT6RBJvk6JPZ/Gq9WvHx1p9Ko=
-github.com/nam-truong-le/lambda-utils-go/v4 v4.2.3/go.mod h1:eWQFRwNrSr9CwulWVb68v0TpQROyo3oZs3RSEWOSsQk=
+github.com/nam-truong-le/lambda-utils-go/v4 v4.2.4 h1:FieqZ4GdbQF1G8Yp9hEpLni96hIoyoNzRq5jwuzfubM=
+github.com/nam-truong-le/lambda-utils-go/v4 v4.2.4/go.mod h1:xJPC7+WHBg/Hacu6Lnu03bPjrwMJ7V9q70+M9V+Ybjw=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
