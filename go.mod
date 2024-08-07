@@ -16,7 +16,7 @@ require (
 	github.com/samber/lo v1.46.0
 	github.com/shopspring/decimal v1.4.0
 	github.com/stretchr/testify v1.9.0
-	go.mongodb.org/mongo-driver v1.16.0
+	go.mongodb.org/mongo-driver v1.16.1
 	golang.org/x/text v0.17.0
 	google.golang.org/api v0.190.0
 )
