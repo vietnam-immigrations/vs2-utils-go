@@ -1,4 +1,4 @@
-package pushover
+package push
 
 import (
 	"context"
