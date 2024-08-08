@@ -20,4 +20,5 @@ func TestSend(t *testing.T) {
 	err := os.Setenv("APP", "vs2")
 	assert.NoError(t, err)
 	push.SendNotificationForOrder(ctx, "testOrderID", "a title", "a message")
+	push.SendSystemNotification(ctx, "a system title", "a system message")
 }
