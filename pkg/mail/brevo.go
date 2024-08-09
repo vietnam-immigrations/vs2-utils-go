@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"io"
+	"time"
 
 	brevo "github.com/getbrevo/brevo-go/lib"
 	"github.com/samber/lo"
@@ -46,6 +47,8 @@ func SendUseBrevo(ctx context.Context, props ses.SendProps) error {
 				Name:    a.Name,
 			}
 		}),
+		// This is a workaround for this issue reported here https://github.com/getbrevo/brevo-go/issues/22
+		ScheduledAt: time.Now().Add(5 * time.Second),
 	})
 	if err != nil {
 		return fmt.Errorf("failed to send email: %w", err)
