@@ -12,6 +12,7 @@ import (
 	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/logger"
 	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/mail"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
+	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/push"
 )
 
 func SendPriorityCustomer(ctx context.Context, order *db.Order) error {
@@ -56,5 +57,22 @@ func SendPriorityCustomer(ctx context.Context, order *db.Order) error {
 		Attachments: nil,
 	})
 
-	return err
+	if err != nil {
+		push.SendNotificationForOrder(
+			ctx,
+			order.ID.Hex(),
+			"Failed to send priority email to customer",
+			fmt.Sprintf("Failed to send priority email to customer for order [%s]: %s", order.Number, err),
+		)
+		return err
+	}
+
+	push.SendNotificationForOrder(
+		ctx,
+		order.ID.Hex(),
+		"Priority email sent to customer",
+		fmt.Sprintf("Priority email sent to customer for order [%s]", order.Number),
+	)
+
+	return nil
 }
