@@ -11,6 +11,7 @@ import (
 	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/logger"
 	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/mail"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
+	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/push"
 )
 
 func SendCustomerPending(ctx context.Context, order *db.Order) error {
@@ -45,5 +46,23 @@ func SendCustomerPending(ctx context.Context, order *db.Order) error {
 		Subject: fmt.Sprintf("[Pending Review] Vietnam Visa Online Order #%s", order.Number),
 		HTML:    *mailHTML,
 	})
-	return err
+
+	if err != nil {
+		push.SendNotificationForOrder(
+			ctx,
+			order.ID.Hex(),
+			"Failed to send email to customer for pending",
+			fmt.Sprintf("Failed to send email to customer for pending for order #%s: %s", order.Number, err),
+		)
+		return err
+	}
+
+	push.SendNotificationForOrder(
+		ctx,
+		order.ID.Hex(),
+		"Email sent to customer for pending",
+		fmt.Sprintf("Email sent to customer for pending for order #%s", order.Number),
+	)
+
+	return nil
 }

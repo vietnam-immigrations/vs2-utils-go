@@ -8,6 +8,7 @@ import (
 	"github.com/samber/lo"
 
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
+	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/push"
 
 	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/aws/secretsmanager"
 	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/aws/ses"
@@ -87,5 +88,23 @@ func SendCustomer(ctx context.Context, order *db.Order) error {
 		Subject: fmt.Sprintf("Vietnam Visa Online Order #%s", order.Number),
 		HTML:    *mailHTML,
 	})
-	return err
+
+	if err != nil {
+		push.SendNotificationForOrder(
+			ctx,
+			order.ID.Hex(),
+			"Failed to send email to customer",
+			fmt.Sprintf("Failed to send email to customer for order [%s]: %s", order.Number, err),
+		)
+		return err
+	}
+
+	push.SendNotificationForOrder(
+		ctx,
+		order.ID.Hex(),
+		"Email sent to customer",
+		fmt.Sprintf("Email sent to customer for order [%s]", order.Number),
+	)
+
+	return nil
 }

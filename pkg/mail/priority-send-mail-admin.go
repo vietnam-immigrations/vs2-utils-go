@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/google/uuid"
 	"github.com/samber/lo"
 
 	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/aws/s3"
@@ -15,7 +14,7 @@ import (
 	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/mail"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/amplify"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
-	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/notification"
+	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/push"
 )
 
 func SendPriorityAdmin(ctx context.Context, order *db.Order) error {
@@ -128,17 +127,19 @@ func sendPriorityAdmin(ctx context.Context, order *db.Order, overrideToEmail *st
 	})
 
 	if err != nil {
-		_ = notification.Create(ctx, notification.Notification{
-			ID:         uuid.New().String(),
-			CSSClasses: "bg-negative text-white",
-			Message:    fmt.Sprintf("Lỗi gửi email tới đối tác cho khách %s %s [#%s]", order.Billing.LastName, order.Billing.FirstName, order.Number),
-		})
+		push.SendNotificationForOrder(
+			ctx,
+			order.ID.Hex(),
+			"Send priority email to partner failed",
+			fmt.Sprintf("Failed to send email to partner for order %s %s [#%s]: %s", order.Billing.LastName, order.Billing.FirstName, order.Number, err),
+		)
 		return err
 	}
-	_ = notification.Create(ctx, notification.Notification{
-		ID:         uuid.New().String(),
-		CSSClasses: "bg-secondary text-white",
-		Message:    fmt.Sprintf("Đã gửi email tới đối tác cho khách %s %s [#%s]", order.Billing.LastName, order.Billing.FirstName, order.Number),
-	})
+	push.SendNotificationForOrder(
+		ctx,
+		order.ID.Hex(),
+		"Email sent to partner",
+		fmt.Sprintf("Email sent to partner for order %s %s [#%s]", order.Billing.LastName, order.Billing.FirstName, order.Number),
+	)
 	return nil
 }

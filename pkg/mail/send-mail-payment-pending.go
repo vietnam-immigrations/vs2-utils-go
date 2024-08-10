@@ -11,6 +11,7 @@ import (
 	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/logger"
 	"github.com/nam-truong-le/lambda-utils-go/v4/pkg/mail"
 	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/db"
+	"github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/push"
 	shopDB "github.com/vietnam-immigrations/vs2-utils-go/v2/pkg/shop/db"
 )
 
@@ -45,5 +46,23 @@ func SendPaymentPending(ctx context.Context, order *shopDB.Order) error {
 		Subject: fmt.Sprintf("[Payment Confirmation Pending] Vietnam Visa Online Order #%s", order.OrderNumber),
 		HTML:    *mailHTML,
 	})
-	return err
+
+	if err != nil {
+		push.SendNotificationForOrder(
+			ctx,
+			order.ID.Hex(),
+			"Failed to send email to customer for payment pending",
+			fmt.Sprintf("Failed to send email to customer for payment pending for order #%s: %s", order.OrderNumber, err),
+		)
+		return err
+	}
+
+	push.SendNotificationForOrder(
+		ctx,
+		order.ID.Hex(),
+		"Email sent to customer for payment pending",
+		fmt.Sprintf("Email sent to customer for payment pending for order #%s", order.OrderNumber),
+	)
+
+	return nil
 }
