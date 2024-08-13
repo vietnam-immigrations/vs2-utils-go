@@ -2,7 +2,7 @@ module github.com/vietnam-immigrations/vs2-utils-go/v2
 
 go 1.22.3
 
-toolchain go1.22.6
+toolchain go1.23.0
 
 require (
 	firebase.google.com/go/v4 v4.14.1
@@ -14,7 +14,6 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/nam-truong-le/lambda-utils-go/v4 v4.2.9
 	github.com/pkg/errors v0.9.1
-	github.com/pusher/pusher-http-go/v5 v5.1.1
 	github.com/samber/lo v1.46.0
 	github.com/shopspring/decimal v1.4.0
 	github.com/stretchr/testify v1.9.0
