@@ -12,7 +12,7 @@ require (
 	github.com/dchest/uniuri v1.2.0
 	github.com/getbrevo/brevo-go v1.1.2
 	github.com/google/uuid v1.6.0
-	github.com/nam-truong-le/lambda-utils-go/v4 v4.2.17
+	github.com/nam-truong-le/lambda-utils-go/v4 v4.2.18
 	github.com/pkg/errors v0.9.1
 	github.com/samber/lo v1.47.0
 	github.com/shopspring/decimal v1.4.0
