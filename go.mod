@@ -2,7 +2,7 @@ module github.com/vietnam-immigrations/vs2-utils-go/v2
 
 go 1.22.3
 
-toolchain go1.23.0
+toolchain go1.23.1
 
 require (
 	firebase.google.com/go/v4 v4.14.1
