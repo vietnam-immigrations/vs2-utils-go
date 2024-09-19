@@ -50,8 +50,8 @@ github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.19 h1:rfprUlsd
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.19/go.mod h1:SCWkEdRq8/7EK60NcvvQ6NXKuTcchAD4ROAsC37VEZE=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.17.17 h1:u+EfGmksnJc/x5tq3A+OD7LrMbSSR/5TrKLvkdy/fhY=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.17.17/go.mod h1:VaMx6302JHax2vHJWgRo+5n9zvbacs3bLU/23DNQrTY=
-github.com/aws/aws-sdk-go-v2/service/s3 v1.61.3 h1:O/rjUvLED2dWzrSY6wv3njBjJlH4LT2xYRnUm402ovI=
-github.com/aws/aws-sdk-go-v2/service/s3 v1.61.3/go.mod h1:5FmD/Dqq57gP+XwaUnd5WFPipAuzrf0HmupX27Gvjvc=
+github.com/aws/aws-sdk-go-v2/service/s3 v1.62.0 h1:rd/aA3iDq1q7YsL5sc4dEwChutH7OZF9Ihfst6pXQzI=
+github.com/aws/aws-sdk-go-v2/service/s3 v1.62.0/go.mod h1:5FmD/Dqq57gP+XwaUnd5WFPipAuzrf0HmupX27Gvjvc=
 github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.32.9 h1:croIrE67fpV6wff+0M8jbrJZpKSlrqVGrCnqNU5rtoI=
 github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.32.9/go.mod h1:BYr9P/rrcLNJ8A36nT15p8tpoVDZ5lroHuMn/njecBw=
 github.com/aws/aws-sdk-go-v2/service/ses v1.26.3 h1:P1wg6h8Jm6BW660d2LsiBN0KdfeXAU+wlJitvPb1Cig=
@@ -138,8 +138,8 @@ github.com/klauspost/compress v1.15.13 h1:NFn1Wr8cfnenSJSA46lLq4wHCcBzKTSjnBIexD
 github.com/klauspost/compress v1.15.13/go.mod h1:QPwzmACJjUTFsnSHH934V6woptycfrDDJnH7hvFVbGM=
 github.com/montanaflynn/stats v0.7.1 h1:etflOAAHORrCC44V+aR6Ftzort912ZU+YLiSTuV8eaE=
 github.com/montanaflynn/stats v0.7.1/go.mod h1:etXPPgVO6n31NxCd9KQUMvCM+ve0ruNzt6R8Bnaayow=
-github.com/nam-truong-le/lambda-utils-go/v4 v4.2.24 h1:+K7+Fo6VLBwB56MOYKK1ieX/tLwz3ROVxDi30LJqP40=
-github.com/nam-truong-le/lambda-utils-go/v4 v4.2.24/go.mod h1:TU9GLElqrv0l1tNvGXuK59WWzIRlTCUdgnSW51WOlG0=
+github.com/nam-truong-le/lambda-utils-go/v4 v4.2.25 h1:x1XbphnX7jKkpP9XBkPXdMkScaJhTak1hX4etw4+lfg=
+github.com/nam-truong-le/lambda-utils-go/v4 v4.2.25/go.mod h1:ecCb1zn5U8koC32OK85qOPV83RbQXZnmurP6OH9ZjUE=
 github.com/pkg/errors v0.9.1 h1:FEBLx1zS214owpjy7qsBeixbURkuhQAwrK5UwLGTwt4=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
