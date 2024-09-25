@@ -7,8 +7,8 @@ toolchain go1.23.1
 require (
 	firebase.google.com/go/v4 v4.14.1
 	github.com/aws/aws-sdk-go-v2 v1.31.0
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.63.1
-	github.com/aws/aws-sdk-go-v2/service/sns v1.32.1
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.63.2
+	github.com/aws/aws-sdk-go-v2/service/sns v1.32.2
 	github.com/dchest/uniuri v1.2.0
 	github.com/getbrevo/brevo-go v1.1.2
 	github.com/google/uuid v1.6.0
