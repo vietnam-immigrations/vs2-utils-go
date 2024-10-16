@@ -7,12 +7,12 @@ toolchain go1.23.2
 require (
 	firebase.google.com/go/v4 v4.14.1
 	github.com/aws/aws-sdk-go-v2 v1.32.2
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.65.3
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.66.0
 	github.com/aws/aws-sdk-go-v2/service/sns v1.33.2
 	github.com/dchest/uniuri v1.2.0
 	github.com/getbrevo/brevo-go v1.1.2
 	github.com/google/uuid v1.6.0
-	github.com/nam-truong-le/lambda-utils-go/v4 v4.2.37
+	github.com/nam-truong-le/lambda-utils-go/v4 v4.2.38
 	github.com/pkg/errors v0.9.1
 	github.com/samber/lo v1.47.0
 	github.com/shopspring/decimal v1.4.0
@@ -35,7 +35,7 @@ require (
 	github.com/antihax/optional v1.0.0 // indirect
 	github.com/aws/aws-lambda-go v1.47.0 // indirect
 	github.com/aws/aws-sdk-go-v2/aws/protocol/eventstream v1.6.6 // indirect
-	github.com/aws/aws-sdk-go-v2/config v1.27.43 // indirect
+	github.com/aws/aws-sdk-go-v2/config v1.28.0 // indirect
 	github.com/aws/aws-sdk-go-v2/credentials v1.17.41 // indirect
 	github.com/aws/aws-sdk-go-v2/feature/ec2/imds v1.16.17 // indirect
 	github.com/aws/aws-sdk-go-v2/internal/configsources v1.3.21 // indirect
